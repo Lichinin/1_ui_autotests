@@ -404,3 +404,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+.vscode
+.pytest_cache
+.venv
+venv/
+allure-report/
+allure-results/
