@@ -11,6 +11,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from config import Pathes, Urls
+from pages.main_page import MainPage
 
 
 def pytest_addoption(parser):
@@ -20,7 +21,7 @@ def pytest_addoption(parser):
     parser.addoption('--browser_version', action='store')
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='class')
 def logger(request):
     log_dir = Pathes.LOG_DIR
     log_dir.mkdir(exist_ok=True)
@@ -46,7 +47,7 @@ def logger(request):
     logger.handlers.clear()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def browser(request, logger) -> WebDriver:
     browser_name = request.config.getoption('--browser')
     browser_version = request.config.getoption('--browser_version')
@@ -80,3 +81,9 @@ def browser(request, logger) -> WebDriver:
 
     yield driver
     driver.quit()
+
+
+@pytest.fixture(scope='class')
+def main_page(browser) -> MainPage:
+    browser.get(MainPage.get_full_url())
+    return MainPage(browser)
