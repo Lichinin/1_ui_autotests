@@ -30,6 +30,7 @@ class TestMainPage:
         AssertionHelper.assert_footer_contact(contacts)
 
     def test_popular_courser_slider(self, main_page: MainPage):
+        main_page.scroll_to(main_page.get_element(MainPage.ACTIVE_SLIDE))
         first_active_slide = main_page.get_element(MainPage.ACTIVE_SLIDE)
         main_page.get_element(MainPage.NEXT_SLIDE_BUTTON).click()
         second_active_slide = main_page.get_element(MainPage.ACTIVE_SLIDE)

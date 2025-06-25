@@ -12,6 +12,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from config import Pathes, Urls
 from pages.main_page import MainPage
+from pages.angular_login_page import AngularPage
 
 
 def pytest_addoption(parser):
@@ -56,6 +57,7 @@ def browser(request, logger) -> WebDriver:
     if browser_name == 'chrome':
         options = ChromeOptions()
         # options.add_argument('--headless')
+        options.add_argument("--incognito")
         options.add_argument('--ignore-certificate-errors')
         options.page_load_strategy = 'eager'
         driver = webdriver.Chrome(options=options)
@@ -87,3 +89,9 @@ def browser(request, logger) -> WebDriver:
 def main_page(browser) -> MainPage:
     browser.get(MainPage.get_full_url())
     return MainPage(browser)
+
+
+@pytest.fixture(scope='class')
+def angular_page(browser) -> AngularPage:
+    browser.get(AngularPage.get_full_url())
+    return AngularPage(browser)

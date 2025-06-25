@@ -1,6 +1,7 @@
 import allure
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
 
 from config import Timeouts, Urls
 
@@ -45,3 +46,25 @@ class BasePage:
     @classmethod
     def get_full_url(cls):
         return f'{Urls.BASE_URL}{cls.ENDPOINT_URL}'
+
+    def scroll_to(self, element):
+        self.browser.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", element)
+
+    def fill_field(self, field, text):
+        field = self.get_element(field)
+        field.clear()
+        field.send_keys(text)
+
+    def wait_for_page_reload(self, timeout=Timeouts.ELEMENT_VISIBILITY):
+        body_element = self.get_element((By.CSS_SELECTOR, 'a[href="#/login"]'))
+        WebDriverWait(self.browser, timeout).until(
+            EC.staleness_of(body_element),
+            message='страница не перезагрузилась'
+        )
+
+    def close_alert(self, timeout=Timeouts.ELEMENT_VISIBILITY):
+        WebDriverWait(self.browser, timeout).until(
+            EC.alert_is_present()
+        )
+        alert = self.browser.switch_to.alert
+        alert.accept()

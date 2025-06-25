@@ -11,3 +11,5 @@ class DataHelper:
     def get_footer_contacts_values(page: MainPage):
         contacts = page.get_elements(MainPage.FOOTER_CONTACT_ELEMENT)
         return [contact.text for contact in contacts]
+
+
