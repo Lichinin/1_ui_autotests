@@ -1,7 +1,6 @@
 import allure
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.by import By
 
 from config import Timeouts, Urls
 
@@ -22,7 +21,7 @@ class BasePage:
             self.browser.logger.info(f'* Get element "{repr(locator)}"')
             return WebDriverWait(self.browser, timeout).until(
                 EC.visibility_of_element_located(locator),
-                message='Не удалось найти {locator} за {timeout} секунд'
+                message=f'Не удалось найти {locator} за {timeout} секунд'
             )
 
     @allure.step('Найти несколько элементов на странице')
@@ -35,7 +34,7 @@ class BasePage:
             self.browser.logger.info(f'* Get elements {repr(locator)}')
             return WebDriverWait(self.browser, timeout).until(
                 EC.visibility_of_all_elements_located(locator),
-                message='Не удалось найти {locator} за {timeout} секунд'
+                message=f'Не удалось найти {locator} за {timeout} секунд'
             )
 
     @allure.step('Получить текст allert')
@@ -55,16 +54,5 @@ class BasePage:
         field.clear()
         field.send_keys(text)
 
-    def wait_for_page_reload(self, timeout=Timeouts.ELEMENT_VISIBILITY):
-        body_element = self.get_element((By.CSS_SELECTOR, 'a[href="#/login"]'))
-        WebDriverWait(self.browser, timeout).until(
-            EC.staleness_of(body_element),
-            message='страница не перезагрузилась'
-        )
-
-    def close_alert(self, timeout=Timeouts.ELEMENT_VISIBILITY):
-        WebDriverWait(self.browser, timeout).until(
-            EC.alert_is_present()
-        )
-        alert = self.browser.switch_to.alert
-        alert.accept()
+    def click_button(self, button):
+        self.get_element(button).click()

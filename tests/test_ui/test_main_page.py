@@ -1,7 +1,7 @@
-from pages.main_page import MainPage
-from helpers.data_helpers import DataHelper
-from helpers.assertion_helpers import AssertionHelper
 from constants.constants import Constants
+from helpers.assertion_helpers import AssertionHelper
+from helpers.data_helpers import DataHelper
+from pages.main_page import MainPage
 
 
 class TestMainPage:
@@ -30,10 +30,25 @@ class TestMainPage:
         AssertionHelper.assert_footer_contact(contacts)
 
     def test_popular_courser_slider(self, main_page: MainPage):
-        main_page.scroll_to(main_page.get_element(MainPage.ACTIVE_SLIDE))
-        first_active_slide = main_page.get_element(MainPage.ACTIVE_SLIDE)
-        main_page.get_element(MainPage.NEXT_SLIDE_BUTTON).click()
-        second_active_slide = main_page.get_element(MainPage.ACTIVE_SLIDE)
-        main_page.get_element(MainPage.PREVIOUS_SLIDE_BUTTON).click()
-        third_active_slide = main_page.get_element(MainPage.ACTIVE_SLIDE)
-        assert first_active_slide == third_active_slide
+        main_page.scroll_to(main_page.get_element(MainPage.SLIDER_MOST_POPULAR))
+        main_page.close_popup()
+        first_index = main_page.get_active_slide_index()
+
+        main_page.click_next_slide()
+
+        second_index = main_page.get_active_slide_index()
+        main_page.click_prev_slide()
+
+        third_index = main_page.get_active_slide_index()
+
+        assert first_index == third_index and int(second_index) == int(first_index) + 1
+
+    def test_nav_menu_after_scroll(self, main_page: MainPage):
+        main_page.scroll_to(main_page.get_element(MainPage.FOOTER))
+        assert main_page.get_element(MainPage.NAV_BAR)
+
+    def test_navigation_to_other_page(self, main_page: MainPage):
+        main_page.click_button(main_page.ALL_COURSES_BUTTON)
+        main_page.click_button(main_page.LIFETIME_MEMBERSHIP_BUTTON)
+        assert main_page.browser.current_url == Constants.LIFETIME_MEMEDERSHIP_URL
+        assert Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE in main_page.browser.title.upper()

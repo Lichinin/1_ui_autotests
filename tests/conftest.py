@@ -11,8 +11,8 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from config import Pathes, Urls
-from pages.main_page import MainPage
 from pages.angular_login_page import AngularPage
+from pages.main_page import MainPage
 
 
 def pytest_addoption(parser):
@@ -22,7 +22,7 @@ def pytest_addoption(parser):
     parser.addoption('--browser_version', action='store')
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='function')
 def logger(request):
     log_dir = Pathes.LOG_DIR
     log_dir.mkdir(exist_ok=True)
@@ -48,7 +48,7 @@ def logger(request):
     logger.handlers.clear()
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def browser(request, logger) -> WebDriver:
     browser_name = request.config.getoption('--browser')
     browser_version = request.config.getoption('--browser_version')
@@ -59,6 +59,7 @@ def browser(request, logger) -> WebDriver:
         # options.add_argument('--headless')
         options.add_argument("--incognito")
         options.add_argument('--ignore-certificate-errors')
+        options.add_argument("--start-maximized")
         options.page_load_strategy = 'eager'
         driver = webdriver.Chrome(options=options)
     elif browser_name == 'firefox':
@@ -85,13 +86,13 @@ def browser(request, logger) -> WebDriver:
     driver.quit()
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='function')
 def main_page(browser) -> MainPage:
     browser.get(MainPage.get_full_url())
     return MainPage(browser)
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='function')
 def angular_page(browser) -> AngularPage:
     browser.get(AngularPage.get_full_url())
     return AngularPage(browser)
