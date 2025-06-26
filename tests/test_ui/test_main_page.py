@@ -57,7 +57,7 @@ class TestMainPage:
     @allure.story('Slider Interaction')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка работы слайдера популярных курсов')
-    def test_popular_courser_slider(self, main_page: MainPage):
+    def test_popular_courses_slider(self, main_page: MainPage):
         with allure.step('Прокрутить до слайдера "Most Popular"'):
             main_page.scroll_to(main_page.get_element(MainPage.SLIDER_MOST_POPULAR))
         main_page.close_popup()

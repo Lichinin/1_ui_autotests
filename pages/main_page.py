@@ -43,18 +43,12 @@ class MainPage(BasePage):
 
     @allure.step('Переключиться на следующий слайд')
     def click_next_slide(self):
-        next_button = WebDriverWait(self.browser, 10).until(
-            EC.element_to_be_clickable(MainPage.NEXT_SLIDE_BUTTON),
-            message='Кнопка "вперёд" не кликабельна'
-        )
+        next_button = self.get_clickable_element(MainPage.NEXT_SLIDE_BUTTON)
         ActionChains(self.browser).move_to_element(next_button).pause(0.5).click().perform()
 
     @allure.step('Переключиться на предыдущий слайд')
     def click_prev_slide(self):
-        prev_button = WebDriverWait(self.browser, 10).until(
-            EC.element_to_be_clickable(MainPage.PREVIOUS_SLIDE_BUTTON),
-            message='Кнопка "назад" не кликабельна'
-        )
+        prev_button = self.get_clickable_element(MainPage.PREVIOUS_SLIDE_BUTTON)
         ActionChains(self.browser).move_to_element(prev_button).pause(0.5).click().perform()
 
     @allure.step('Закрыть всплывающее окно')

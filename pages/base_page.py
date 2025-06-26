@@ -37,6 +37,19 @@ class BasePage:
                 message=f'Не удалось найти {locator} за {timeout} секунд'
             )
 
+    @allure.step('Найти кликабельный элемент на странице')
+    def get_clickable_element(
+        self,
+        locator: tuple,
+        timeout=Timeouts.ELEMENT_VISIBILITY
+    ):
+        with allure.step(f'Найти элемент "{locator}"'):
+            self.browser.logger.info(f'* Get element "{repr(locator)}"')
+            return WebDriverWait(self.browser, timeout).until(
+                EC.element_to_be_clickable(locator),
+                message=f'Элемент {locator} не кликабельный'
+            )
+
     @classmethod
     @allure.step('Сформировать полный URL')
     def get_full_url(cls):
