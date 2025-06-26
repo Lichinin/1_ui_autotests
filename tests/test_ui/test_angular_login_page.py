@@ -13,14 +13,20 @@ class TestAngularLoginPage:
     @allure.title('Проверка видимости поля "Username"')
     def test_username_is_visible(self, angular_page: AngularPage):
         with allure.step('Проверить что поле "Username" отображается'):
-            assert angular_page.LOGIN_FIELD
+            assert angular_page.is_element_visible(angular_page.LOGIN_FIELD)
+        with allure.step('Проверить что есть атрибут "text"'):
+            text_attr_value = angular_page.get_element_attribute(angular_page.LOGIN_FIELD, 'value')
+            assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
 
     @allure.story('Form Elements')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка видимости поля "Password"')
     def test_password_is_visible(self, angular_page: AngularPage):
         with allure.step('Проверить что поле "Password" отображается'):
-            assert angular_page.PASSWORD_FIELD
+            assert angular_page.is_element_visible(angular_page.PASSWORD_FIELD)
+        with allure.step('Проверить что есть атрибут "text"'):
+            text_attr_value = angular_page.get_element_attribute(angular_page.PASSWORD_FIELD, 'value')
+            assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
 
     @allure.story('Login Button')
     @allure.severity(allure.severity_level.NORMAL)

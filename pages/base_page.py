@@ -1,7 +1,7 @@
 import allure
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from config import Timeouts, Urls
 
 
@@ -60,3 +60,17 @@ class BasePage:
     def get_element_text(self, locator):
         element = self.get_element(locator)
         return element.text
+
+    @allure.step('Проверить видимость элемента')
+    def is_element_visible(self, locator):
+        try:
+            WebDriverWait(self.browser, 10).until(
+                EC.visibility_of_element_located(locator)
+            )
+            return True
+        except (TimeoutException, NoSuchElementException):
+            return False
+
+    def get_element_attribute(self, locator, attribute_name):
+        element = self.get_element(locator)
+        return element.get_attribute(attribute_name)
