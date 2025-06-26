@@ -71,6 +71,11 @@ class BasePage:
         except (TimeoutException, NoSuchElementException):
             return False
 
+    @allure.step('Получить значение атрибута "{attribute_name}" у элемента "{locator}"')
     def get_element_attribute(self, locator, attribute_name):
         element = self.get_element(locator)
         return element.get_attribute(attribute_name)
+
+    @allure.step('Получить текущий URL страницы')
+    def get_current_url(self):
+        return self.browser.current_url
