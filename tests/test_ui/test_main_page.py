@@ -26,7 +26,12 @@ class TestMainPage:
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка видимости кнопки регистрации')
     def test_register_button_is_visible(self, main_page: MainPage):
-        assert main_page.get_element(MainPage.REGISTER_BUTTON)
+        with allure.step('Проверить видимость кнопки регистрации'):
+            assert main_page.is_element_visible(MainPage.REGISTER_BUTTON)
+        with allure.step('Проверить текст кнопки регистрации'):
+            assert main_page.get_element_text(MainPage.REGISTER_BUTTON) == Constants.REGISTER_BUTTON_TEXT
+        with allure.step('Проверить цвет фона кнопки регистрации'):
+            assert main_page.get_element_background_colour(MainPage.REGISTER_BUTTON) == Constants.REGISTER_BUTTON_COLOUR
 
     @allure.story('Courses Section')
     @allure.severity(allure.severity_level.NORMAL)

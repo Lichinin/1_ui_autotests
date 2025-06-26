@@ -96,3 +96,8 @@ class BasePage:
     @allure.step('Получить title текущей  страницы')
     def get_page_title(self):
         return self.browser.title.upper()
+
+    @allure.step('Получить цвет фона элемента "{element}"')
+    def get_element_background_colour(self, element):
+        element = self.get_element(element)
+        return element.value_of_css_property('background-color')
