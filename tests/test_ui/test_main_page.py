@@ -96,4 +96,4 @@ class TestMainPage:
         with allure.step('Проверить URL страницы'):
             assert main_page.get_current_url() == Constants.LIFETIME_MEMEDERSHIP_URL
         with allure.step('Проверить заголовок страницы'):
-            assert Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE in main_page.browser.title.upper()
+            assert Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE in main_page.get_page_title()

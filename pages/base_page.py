@@ -79,3 +79,7 @@ class BasePage:
     @allure.step('Получить текущий URL страницы')
     def get_current_url(self):
         return self.browser.current_url
+
+    @allure.step('Получить title текущей  страницы')
+    def get_page_title(self):
+        return self.browser.title.upper()
