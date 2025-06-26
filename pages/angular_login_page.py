@@ -12,14 +12,13 @@ class AngularPage(BasePage):
     LOGIN_DESCRIPTION_FIELD = (By.ID, 'formly_1_input_username_0')
     PASSWORD_FIELD = (By.ID, 'password')
     LOGIN_BUTTON = (By. CLASS_NAME, 'btn-danger')
-    LOGIN_MESSAGE_SUCCESS = (By.CSS_SELECTOR, 'p.ng-scope')
+    LOGIN_MESSAGE_SUCCESS = (By.XPATH, "//p[normalize-space()=\"You're logged in!!\"]")
     LOGOUT_LINK = (By.CSS_SELECTOR, 'a[href="#/login"]')
     DANGER_ALERT = (By.CLASS_NAME, 'alert-danger ')
 
     @allure.step('Получить текст успешного входа')
     def get_sucessful_login_text(self):
-        self.get_element(self.LOGOUT_LINK)
-        text = self.get_element(self.LOGIN_MESSAGE_SUCCESS).text
+        text = self.get_element_text(self.LOGIN_MESSAGE_SUCCESS)
         return text
 
     @allure.step('Получить текст ошибки входа')

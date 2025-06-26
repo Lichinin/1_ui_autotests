@@ -55,3 +55,8 @@ class BasePage:
     @allure.step('Кликнуть на кнопку "{button}"')
     def click_button(self, button):
         self.get_element(button).click()
+
+    @allure.step('Кликнуть текст элемента')
+    def get_element_text(self, locator):
+        element = self.get_element(locator)
+        return element.text
