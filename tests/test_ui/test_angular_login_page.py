@@ -32,9 +32,11 @@ class TestAngularLoginPage:
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка, что кнопка "Login" изначально отключена')
     def test_login_button_is_disabled(self, angular_page: AngularPage):
-        login_button = angular_page.get_element(AngularPage.LOGIN_BUTTON)
         with allure.step('Проверить что кнопка "Login" не активна'):
-            assert login_button.get_attribute('disabled') == 'true'
+            assert angular_page.get_element_attribute(AngularPage.LOGIN_BUTTON, 'disabled') == 'true'
+        with allure.step('Проверить, что текстом кнопки является "Login"'):
+            assert angular_page.get_element_text(AngularPage.LOGIN_BUTTON) == 'Login'
+
 
     @allure.story('Authorization')
     @allure.severity(allure.severity_level.CRITICAL)
