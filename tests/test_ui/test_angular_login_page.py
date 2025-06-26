@@ -1,6 +1,7 @@
 import allure
-from pages.angular_login_page import AngularPage
+
 from constants.constants import Constants
+from pages.angular_login_page import AngularPage
 
 
 @allure.epic('Web UI Tests')
