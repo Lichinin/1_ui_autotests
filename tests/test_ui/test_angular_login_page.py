@@ -2,6 +2,7 @@ import allure
 
 from constants.constants import Constants
 from pages.angular_login_page import AngularPage
+from helpers.data_helpers import DataHelper
 
 
 @allure.epic('Web UI Tests')
@@ -59,11 +60,11 @@ class TestAngularLoginPage:
     @allure.title('Неудачная авторизация с неверным логином')
     def test_invalid_autorization(self, angular_page: AngularPage):
         with allure.step('Заполнить поле "Username" неверным значением'):
-            angular_page.fill_field(angular_page.LOGIN_FIELD, Constants.ANGULAR_INVALID_LOGIN)
+            angular_page.fill_field(angular_page.LOGIN_FIELD, DataHelper.random_login_data()['login'])
         with allure.step('Заполнить поле "Password"'):
-            angular_page.fill_field(angular_page.PASSWORD_FIELD, Constants.ANGULAR_VALID_PASS)
+            angular_page.fill_field(angular_page.PASSWORD_FIELD, DataHelper.random_login_data()['password'])
         with allure.step('Заполнить описание пользователя'):
-            angular_page.fill_field(angular_page.LOGIN_DESCRIPTION_FIELD, Constants.ANGULAR_VALID_DESC)
+            angular_page.fill_field(angular_page.LOGIN_DESCRIPTION_FIELD, DataHelper.random_login_data()['description'])
         with allure.step('Нажать на кнопку "Login"'):
             angular_page.click_button(angular_page.LOGIN_BUTTON)
         with allure.step('Проверить текст ошибки'):

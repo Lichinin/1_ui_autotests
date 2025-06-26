@@ -17,7 +17,6 @@ class Constants:
     LIFETIME_MEMEDERSHIP_URL = 'https://www.way2automation.com/lifetime-membership-club/'
     LIFETIME_MEMEDERSHIP_PAGE_TITLE = 'LIFETIME MEMBERSHIP CLUB'
     ANGULAR_VALID_LOGIN = 'angular'
-    ANGULAR_INVALID_LOGIN = 'not_angular'
     ANGULAR_VALID_DESC = 'angular'
     ANGULAR_VALID_PASS = 'password'
     ANGULAR_SUCCESS_LOGIN_TEXT = "You're logged in!!"
