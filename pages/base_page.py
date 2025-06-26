@@ -37,22 +37,21 @@ class BasePage:
                 message=f'Не удалось найти {locator} за {timeout} секунд'
             )
 
-    @allure.step('Получить текст allert')
-    def get_alert_message(self):
-        alert = self.browser.switch_to.alert
-        return alert.text if alert.text else ''
-
     @classmethod
+    @allure.step('Сформировать полный URL')
     def get_full_url(cls):
         return f'{Urls.BASE_URL}{cls.ENDPOINT_URL}'
 
+    @allure.step('Прокрутить страницу до элемента')
     def scroll_to(self, element):
         self.browser.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", element)
 
+    @allure.step('Заполнить поле "{field}" значением "{text}"')
     def fill_field(self, field, text):
         field = self.get_element(field)
         field.clear()
         field.send_keys(text)
 
+    @allure.step('Кликнуть на кнопку "{button}"')
     def click_button(self, button):
         self.get_element(button).click()

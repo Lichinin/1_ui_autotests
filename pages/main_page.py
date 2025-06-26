@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -35,38 +36,37 @@ class MainPage(BasePage):
     ALL_COURSES_BUTTON = (By.ID, 'menu-item-27580')
     LIFETIME_MEMBERSHIP_BUTTON = (By.ID, 'menu-item-27581')
 
+    @allure.step('Получить индекс активного слайда')
     def get_active_slide_index(self):
         active_slide = self.get_element(MainPage.ACTIVE_SLIDE)
         return active_slide.get_attribute("data-swiper-slide-index")
 
+    @allure.step('Переключиться на следующий слайд')
     def click_next_slide(self):
         next_button = WebDriverWait(self.browser, 10).until(
             EC.element_to_be_clickable(MainPage.NEXT_SLIDE_BUTTON),
-            message="Кнопка 'вперёд' не кликабельна"
+            message='Кнопка "вперёд" не кликабельна'
         )
         ActionChains(self.browser).move_to_element(next_button).pause(0.5).click().perform()
 
+    @allure.step('Переключиться на предыдущий слайд')
     def click_prev_slide(self):
         prev_button = WebDriverWait(self.browser, 10).until(
             EC.element_to_be_clickable(MainPage.PREVIOUS_SLIDE_BUTTON),
-            message="Кнопка 'назад' не кликабельна"
+            message='Кнопка "назад" не кликабельна'
         )
         ActionChains(self.browser).move_to_element(prev_button).pause(0.5).click().perform()
 
-    def wait_for_slide_change(self, old_index):
-        WebDriverWait(self.browser, 10).until(
-            lambda d: self.get_active_slide_index() != old_index,
-            message=f"Слайд не изменился с индекса {old_index}"
-        )
-
+    @allure.step('Закрыть всплывающее окно')
     def close_popup(self):
         self.click_next_slide()
         WebDriverWait(self.browser, 10).until(
-            EC.visibility_of_element_located((By.ID, "elementor-popup-modal-26600"))
+            EC.visibility_of_element_located((By.ID, 'elementor-popup-modal-26600'))
         )
         close_button = self.get_element(self.POPUP_CLOSE_BUTTON)
         close_button.click()
 
+    @allure.step('Прокрутить страницу вниз')
     def scroll_to_bottom(self):
         actions = ActionChains(self.browser)
         actions.send_keys(Keys.PAGE_DOWN).perform()
