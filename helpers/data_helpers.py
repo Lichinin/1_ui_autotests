@@ -1,5 +1,6 @@
 import allure
 from faker import Faker
+
 from pages.main_page import MainPage
 
 fake = Faker(['en_US'])

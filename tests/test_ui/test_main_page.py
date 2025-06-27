@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from constants.constants import Constants
 from helpers.assertion_helpers import AssertionHelper
@@ -37,7 +38,6 @@ class TestMainPage:
         with allure.step('Проверить цвет фона кнопки регистрации'):
             assert main_page.get_element_background_colour(MainPage.REGISTER_BUTTON) == Constants.REGISTER_BUTTON_COLOUR
 
-
     @allure.story('Contacts Validation')
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Проверка контактов в хедере')
@@ -72,6 +72,28 @@ class TestMainPage:
 
         with allure.step('Проверить переключения слайдера'):
             assert first_index == third_index and int(second_index) == int(first_index) + 1
+
+    @pytest.mark.parametrize('index, expected_data', [
+        (0, Constants.FIRS_POPULAR_COURSE_DATA),
+        (1, Constants.SECOND_POPULAR_COURSE_DATA),
+        (2, Constants.THIRD_POPULAR_COURSE_DATA),
+        (3, Constants.FOURTH_POPULAR_COURSE_DATA),
+    ])
+    @allure.story('Best Courses')
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.title('Проверка блока "Best Selenium Certification Course Online"')
+    def test_best_courses_menu(self, main_page: MainPage, index, expected_data):
+        with allure.step('Проверить видимость блока курсов'):
+            assert main_page.is_element_visible(MainPage.COURSES_LIST)
+
+        with allure.step('Проверить количество курсов в блоке'):
+            courses_data_list = main_page.get_popular_couses_data()
+            assert len(courses_data_list) == 4
+
+        with allure.step(f'Проверить данные карточки курса #{index + 1}'):
+            course_data = main_page.get_popular_couses_data()[index]
+            assert course_data == expected_data, \
+                f'Ошибка в карточке #{index + 1}: {course_data} != {expected_data}'
 
     @allure.story('Navigation Menu')
     @allure.severity(allure.severity_level.NORMAL)
