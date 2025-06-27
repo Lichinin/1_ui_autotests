@@ -10,21 +10,25 @@ from pages.main_page import MainPage
 @allure.feature('Main Page Functionality')
 class TestMainPage:
 
-    @allure.story('Header Section')
+    @allure.story('Page elements')
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Проверка видимости header страницы')
-    def test_header_is_visible(self, main_page: MainPage):
-        assert main_page.get_element(MainPage.HEADER)
+    @allure.title('Проверка основных элементов страницы')
+    def test_page_elements_is_visible(self, main_page: MainPage):
+        with allure.step('Проверить видимость header регистрации'):
+            assert main_page.is_element_visible(MainPage.HEADER)
 
-    @allure.story('Navigation Bar')
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Проверка видимости навигационной панели')
-    def test_navbar_is_visible(self, main_page: MainPage):
-        assert main_page.get_element(MainPage.NAV_BAR)
+        with allure.step('Проверить видимость навигационной панели'):
+            assert main_page.is_element_visible(MainPage.NAV_BAR)
+
+        with allure.step('Проверить видимость блока курсов'):
+            assert main_page.is_element_visible(MainPage.COURSES_LIST)
+
+        with allure.step('Проверить видимость футера'):
+            assert main_page.get_element(MainPage.FOOTER)
 
     @allure.story('Register Button')
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Проверка видимости кнопки регистрации')
+    @allure.title('Проверка кнопки регистрации')
     def test_register_button_is_visible(self, main_page: MainPage):
         with allure.step('Проверить видимость кнопки регистрации'):
             assert main_page.is_element_visible(MainPage.REGISTER_BUTTON)
@@ -33,17 +37,6 @@ class TestMainPage:
         with allure.step('Проверить цвет фона кнопки регистрации'):
             assert main_page.get_element_background_colour(MainPage.REGISTER_BUTTON) == Constants.REGISTER_BUTTON_COLOUR
 
-    @allure.story('Courses Section')
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Проверка видимости блока курсов')
-    def test_courses_list_is_visible(self, main_page: MainPage):
-        assert main_page.get_element(MainPage.COURSES_LIST)
-
-    @allure.story('Footer Section')
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Проверка видимости футера')
-    def test_footer_is_visible(self, main_page: MainPage):
-        assert main_page.get_element(MainPage.FOOTER)
 
     @allure.story('Contacts Validation')
     @allure.severity(allure.severity_level.CRITICAL)
