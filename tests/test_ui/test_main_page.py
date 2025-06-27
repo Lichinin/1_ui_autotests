@@ -62,7 +62,7 @@ class TestMainPage:
     @allure.title('Проверка работы слайдера популярных курсов')
     def test_popular_courses_slider(self, main_page: MainPage):
         with allure.step('Прокрутить до слайдера "Most Popular"'):
-            main_page.scroll_to(main_page.get_element(MainPage.SLIDER_MOST_POPULAR))
+            main_page.scroll_to_most_popular()
         main_page.close_popup()
         first_index = main_page.get_active_slide_index()
 
@@ -105,19 +105,18 @@ class TestMainPage:
     @allure.title('Проверка меню после прокрутки вниз')
     def test_nav_menu_after_scroll(self, main_page: MainPage):
         with allure.step('Прокрутить до футера страницы'):
-            main_page.scroll_to(main_page.get_element(MainPage.FOOTER))
+            main_page.scroll_to_footer()
         with allure.step('Проверить, что навигационная панель остаётся видимой'):
-            assert main_page.get_element(MainPage.NAV_BAR)
+            assert main_page.is_element_visible(MainPage.NAV_BAR)
 
     @allure.story('Navigation to Other Page')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Переход на страницу Lifetime Membership')
     def test_navigation_to_other_page(self, main_page: MainPage):
         with allure.step('Нажать на кнопку "All Courses"'):
-            main_page.click_button(main_page.ALL_COURSES_BUTTON)
-
+            main_page.click_all_courses_button()
         with allure.step('Нажать на кнопку "Lifetime Membership"'):
-            main_page.click_button(main_page.LIFETIME_MEMBERSHIP_BUTTON)
+            main_page.click_lifetime_membership_button()
         with allure.step('Проверить URL страницы'):
             assert main_page.get_current_url() == Constants.LIFETIME_MEMEDERSHIP_URL
         with allure.step('Проверить заголовок страницы'):

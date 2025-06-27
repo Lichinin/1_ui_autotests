@@ -1,7 +1,6 @@
 import allure
 
 from constants.constants import Constants
-from helpers.data_helpers import DataHelper
 from pages.angular_login_page import AngularPage
 
 
@@ -16,7 +15,7 @@ class TestAngularLoginPage:
         with allure.step('Проверить что поле "Username" отображается'):
             assert angular_page.is_element_visible(angular_page.LOGIN_FIELD)
         with allure.step('Проверить что есть атрибут "text"'):
-            text_attr_value = angular_page.get_element_attribute(angular_page.LOGIN_FIELD, 'value')
+            text_attr_value = angular_page.get_username_text_attr()
             assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
 
     @allure.story('Form Elements')
@@ -26,7 +25,7 @@ class TestAngularLoginPage:
         with allure.step('Проверить что поле "Password" отображается'):
             assert angular_page.is_element_visible(angular_page.PASSWORD_FIELD)
         with allure.step('Проверить что есть атрибут "text"'):
-            text_attr_value = angular_page.get_element_attribute(angular_page.PASSWORD_FIELD, 'value')
+            text_attr_value = angular_page.get_password_text_attr()
             assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
 
     @allure.story('Login Button')
@@ -38,19 +37,18 @@ class TestAngularLoginPage:
         with allure.step('Проверить, что текстом кнопки является "Login"'):
             assert angular_page.get_element_text(AngularPage.LOGIN_BUTTON) == 'Login'
 
-
     @allure.story('Authorization')
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Успешная авторизация с валидными данными')
     def test_valid_autorization(self, angular_page: AngularPage):
         with allure.step('Заполнить поле "Username"'):
-            angular_page.fill_field(angular_page.LOGIN_FIELD, Constants.ANGULAR_VALID_LOGIN)
+            angular_page.fill_username_field_valid()
         with allure.step('Заполнить поле Pass"word'):
-            angular_page.fill_field(angular_page.PASSWORD_FIELD, Constants.ANGULAR_VALID_PASS)
+            angular_page.fill_password_field_valid()
         with allure.step('Заполнить описание пользователя'):
-            angular_page.fill_field(angular_page.LOGIN_DESCRIPTION_FIELD, Constants.ANGULAR_VALID_DESC)
+            angular_page.fill_description_field_valid()
         with allure.step('Нажать на кнопку "Login"'):
-            angular_page.click_button(angular_page.LOGIN_BUTTON)
+            angular_page.click_login_button()
         with allure.step('Проверить текст успешного входа'):
             text = angular_page.get_sucessful_login_text()
             assert text == Constants.ANGULAR_SUCCESS_LOGIN_TEXT
@@ -60,13 +58,13 @@ class TestAngularLoginPage:
     @allure.title('Неудачная авторизация с неверным логином')
     def test_invalid_autorization(self, angular_page: AngularPage):
         with allure.step('Заполнить поле "Username" неверным значением'):
-            angular_page.fill_field(angular_page.LOGIN_FIELD, DataHelper.random_login_data()['login'])
+            angular_page.fill_username_field_invalid()
         with allure.step('Заполнить поле "Password"'):
-            angular_page.fill_field(angular_page.PASSWORD_FIELD, DataHelper.random_login_data()['password'])
+            angular_page.fill_password_field_invalid()
         with allure.step('Заполнить описание пользователя'):
-            angular_page.fill_field(angular_page.LOGIN_DESCRIPTION_FIELD, DataHelper.random_login_data()['description'])
+            angular_page.fill_description_field_invalid()
         with allure.step('Нажать на кнопку "Login"'):
-            angular_page.click_button(angular_page.LOGIN_BUTTON)
+            angular_page.click_login_button()
         with allure.step('Проверить текст ошибки'):
             text = angular_page.get_unsucessful_login_text()
             assert text == Constants.ANGULAR_UNSUCCESS_LOGIN_TEXT
@@ -76,12 +74,12 @@ class TestAngularLoginPage:
     @allure.title('Выход из аккаунта (logout)')
     def test_logout(self, angular_page: AngularPage):
         with allure.step('Вход с валидными данными'):
-            angular_page.fill_field(angular_page.LOGIN_FIELD, Constants.ANGULAR_VALID_LOGIN)
-            angular_page.fill_field(angular_page.PASSWORD_FIELD, Constants.ANGULAR_VALID_PASS)
-            angular_page.fill_field(angular_page.LOGIN_DESCRIPTION_FIELD, Constants.ANGULAR_VALID_DESC)
-            angular_page.click_button(angular_page.LOGIN_BUTTON)
+            angular_page.fill_username_field_valid()
+            angular_page.fill_password_field_valid()
+            angular_page.fill_description_field_valid()
+            angular_page.click_login_button()
         with allure.step('Нажать на ссылку "Logout"'):
-            angular_page.click_button(angular_page.LOGOUT_LINK)
+            angular_page.click_logout_button()
         with allure.step('Проверить, что пользователь перенаправлён обратно на форму входа'):
             assert angular_page.get_element(angular_page.LOGIN_FIELD)
             assert angular_page.get_element(angular_page.PASSWORD_FIELD)

@@ -142,3 +142,19 @@ class MainPage(BasePage):
                 'icon': icon,
             })
         return footer_contacts_list
+
+    @allure.step('Прокрутить до блока "Most Popular"')
+    def scroll_to_most_popular(self):
+        self.scroll_to(self.get_element(MainPage.SLIDER_MOST_POPULAR))
+
+    @allure.step('Прокрутить до футера')
+    def scroll_to_footer(self):
+        self.scroll_to(self.get_element(MainPage.FOOTER))
+
+    @allure.step('Нажать кнопку "All Courses"')
+    def click_all_courses_button(self):
+        self.click_button(self.ALL_COURSES_BUTTON)
+
+    @allure.step('Нажать кнопку "Lifetime Membership"')
+    def click_lifetime_membership_button(self):
+        self.click_button(self.LIFETIME_MEMBERSHIP_BUTTON)
