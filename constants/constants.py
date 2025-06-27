@@ -59,3 +59,55 @@ class Constants:
         'button_background': 'rgba(230, 51, 44, 1)',
         'button_link': 'https://www.way2automation.com/#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjI1NDY1IiwidG9nZ2xlIjpmYWxzZX0%3D'
     }
+
+    FIRST_HEADER_CONTACT_DATA = {
+        'link': 'https://wa.me/+919711111558',
+        'text': '+919711-111-558',
+        'icon': True
+    }
+    SECOND_HEADER_CONTACT_DATA= {
+        'link': 'https://wa.me/+919711191558',
+        'text': '+919711-191-558',
+        'icon': True
+    }
+    THIRD_HEADER_CONTACT_DATA= {
+        'link': 'tel:+16464800603',
+        'text': '+1 646-480-0603',
+        'icon': True
+    }
+    FOURTH_HEADER_CONTACT_DATA= {
+        'link': 'skype:seleniumcoaching?chat',
+        'text': 'seleniumcoaching',
+        'icon': True
+    }
+    FIFTH_HEADER_CONTACT_DATA = {
+        'link': 'mailto:trainer@way2automation.com',
+        'text': 'trainer@way2automation.com',
+        'icon': True
+    }
+
+    FIRST_FOOTER_CONTACT_DATA = {
+        'link': None,
+        'text': 'Way2Automation\nCDR Complex, 3rd Floor, Naya Bans Market, Sector 15, Noida, Near sec-16 Metro Station',
+        'icon': True
+    }
+    SECOND_FOOTER_CONTACT_DATA= {
+        'link': 'tel:9711111558',
+        'text': '+91 97111-11-558',
+        'icon': True
+    }
+    THIRD_FOOTER_CONTACT_DATA= {
+        'link': 'tel:9711191558',
+        'text': '+91 97111-91-558',
+        'icon': True
+    }
+    FOURTH_FOOTER_CONTACT_DATA= {
+        'link': 'mailto:trainer@way2automation.com',
+        'text': 'trainer@way2automation.com',
+        'icon': True
+    }
+    FIFTH_FOOTER_CONTACT_DATA = {
+        'link': 'mailto:seleniumcoaching@gmail.com',
+        'text':'seleniumcoaching@gmail.com',
+        'icon': True
+    }

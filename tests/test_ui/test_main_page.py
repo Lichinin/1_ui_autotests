@@ -3,7 +3,6 @@ import pytest
 
 from constants.constants import Constants
 from helpers.assertion_helpers import AssertionHelper
-from helpers.data_helpers import DataHelper
 from pages.main_page import MainPage
 
 
@@ -42,15 +41,21 @@ class TestMainPage:
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Проверка контактов в хедере')
     def test_header_contacts(self, main_page: MainPage):
-        contacts = DataHelper.get_contacts_values(main_page)
-        assert contacts == Constants.HEADER_CONTACTS
+        with allure.step('Проверить количество контактов в header'):
+            contacts = main_page.get_header_contacts_data()
+            assert len(contacts) == 5
+        with allure.step('Проверить данные контактов в header'):
+            AssertionHelper.assert_header_contact(contacts)
 
     @allure.story('Contacts Validation')
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Проверка контактов в футере')
     def test_footer_contacts(self, main_page: MainPage):
-        contacts = DataHelper.get_footer_contacts_values(main_page)
-        AssertionHelper.assert_footer_contact(contacts)
+        with allure.step('Проверить количество контактов в footer'):
+            contacts = main_page.get_footer_contacts_data()
+            assert len(contacts) == 5
+        with allure.step('Проверить данные контактов в footer'):
+            AssertionHelper.assert_footer_contact(contacts)
 
     @allure.story('Slider Interaction')
     @allure.severity(allure.severity_level.NORMAL)

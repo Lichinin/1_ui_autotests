@@ -18,12 +18,25 @@ class MainPage(BasePage):
     COURSES_LIST = (By.CSS_SELECTOR, 'section[data-id="5b4952c1"]')
     FOOTER = (By.CSS_SELECTOR, 'div[data-elementor-type="footer"]')
     HEADER_CONTACT_ELEMENT = (
-        By.CSS_SELECTOR, '.elementor-icon-list-item.elementor-inline-item'
+        By.CSS_SELECTOR, '.elementor-icon-list-items > .elementor-inline-item'
     )
+    HEADER_CONTACT_ICON = (By.CSS_SELECTOR, '.elementor-icon-list-icon')
+    HEADER_CONTACT_TEXT = (By.CSS_SELECTOR, '.elementor-icon-list-text')
+    HEADER_CONTACT_LINK = (By.CSS_SELECTOR, 'a')
+
     FOOTER_CONTACT_ELEMENT = (
         By.CSS_SELECTOR,
-        'div[data-id="695441a0"] .elementor-icon-list-items > li.elementor-icon-list-item a'
+        '.elementor-element-695441a0 .elementor-icon-list-item'
     )
+    FOOTER_CONTACT_ICON = (
+        By.CSS_SELECTOR,
+        '.elementor-icon-list-icon i'
+    )
+    FOOTER_CONTACT_TEXT = (
+        By.CSS_SELECTOR,
+        '.elementor-icon-list-text'
+    )
+    FOOTER_CONTACT_LINK = (By.CSS_SELECTOR, 'a')
 
     POPULAR_COURSES_SLIDER = (By.CLASS_NAME, 'swiper-container-c50f9f0')
     ACTIVE_SLIDE = (By.CSS_SELECTOR, 'div[data-id="c50f9f0"] .swiper-slide-active')
@@ -80,7 +93,7 @@ class MainPage(BasePage):
         for course in courses:
             title = course.find_element(*MainPage.COURSE_TITLE).text.strip()
             description = course.find_element(*MainPage.COURSE_DESCRIPTION).text.strip()
-            logo_icon = True if course.find_element(*MainPage.COURSE_LOGO_ICON) else False
+            logo_icon = bool(course.find_element(*MainPage.COURSE_LOGO_ICON))
             button = course.find_element(*MainPage.COURSE_BUTTON)
             button_text = button.text.strip()
             button_parent = course.find_element(*MainPage.COURSE_BUTTON_LINK)
@@ -95,3 +108,37 @@ class MainPage(BasePage):
                 'button_link': button_link
             })
         return course_data_list
+
+    @allure.step('Получить контактов в header')
+    def get_header_contacts_data(self):
+        header_contacts = self.get_elements(MainPage.HEADER_CONTACT_ELEMENT)
+        header_contacts_list = []
+        for contact in header_contacts:
+            link = contact.find_element(*self.HEADER_CONTACT_LINK).get_attribute("href").strip()
+            text = contact.find_element(*self.HEADER_CONTACT_TEXT).text.strip()
+            icon = bool(contact.find_elements(*self.HEADER_CONTACT_ICON))
+            header_contacts_list.append({
+                'link': link,
+                'text': text,
+                'icon': icon,
+            })
+        return header_contacts_list
+
+    @allure.step('Получить контактов в footer')
+    def get_footer_contacts_data(self):
+        footer_contacts = self.get_elements(MainPage.FOOTER_CONTACT_ELEMENT)
+        footer_contacts_list = []
+        for contact in footer_contacts:
+            link = (
+                contact.find_element(*self.FOOTER_CONTACT_LINK).get_attribute("href").strip()
+                if contact.find_elements(*self.FOOTER_CONTACT_LINK)
+                else None
+            )
+            text = contact.find_element(*self.FOOTER_CONTACT_TEXT).text.strip()
+            icon = bool(contact.find_elements(*self.FOOTER_CONTACT_ICON))
+            footer_contacts_list.append({
+                'link': link,
+                'text': text,
+                'icon': icon,
+            })
+        return footer_contacts_list
