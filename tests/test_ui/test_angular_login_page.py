@@ -1,5 +1,7 @@
 import allure
 
+from constants.constants import Constants
+from helpers.data_helpers import DataHelper
 from pages.angular_login_page import AngularPage
 
 
@@ -42,12 +44,16 @@ class TestAngularLoginPage:
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Успешная авторизация с валидными данными')
     def test_valid_autorization(self, angular_page: AngularPage):
-        with allure.step('Заполнить поле "Username"'):
-            angular_page.fill_username_field_valid()
-        with allure.step('Заполнить поле Pass"word'):
-            angular_page.fill_password_field_valid()
-        with allure.step('Заполнить описание пользователя'):
-            angular_page.fill_description_field_valid()
+        login = Constants.ANGULAR_VALID_LOGIN
+        password = Constants.ANGULAR_VALID_PASS
+        description = Constants.ANGULAR_VALID_DESC
+
+        with allure.step('Заполнить поле "Username" валидным значением'):
+            angular_page.fill_username_field(login)
+        with allure.step('Заполнить поле "Password" валидным значением'):
+            angular_page.fill_password_field(password)
+        with allure.step('Заполнить описание пользователя валидным значением'):
+            angular_page.fill_description_field(description)
         with allure.step('Нажать на кнопку "Login"'):
             angular_page.click_login_button()
         with allure.step('Проверить текст успешного входа'):
@@ -57,12 +63,16 @@ class TestAngularLoginPage:
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Неудачная авторизация с невалидными данными')
     def test_invalid_autorization(self, angular_page: AngularPage):
-        with allure.step('Заполнить поле "Username" неверным значением'):
-            angular_page.fill_username_field_invalid()
-        with allure.step('Заполнить поле "Password"'):
-            angular_page.fill_password_field_invalid()
-        with allure.step('Заполнить описание пользователя'):
-            angular_page.fill_description_field_invalid()
+        login = DataHelper.random_login_data()['login']
+        password = DataHelper.random_login_data()['password']
+        description = DataHelper.random_login_data()['description']
+
+        with allure.step('Заполнить поле "Username" невалидным значением'):
+            angular_page.fill_username_field(login)
+        with allure.step('Заполнить поле "Password" невалидным значением'):
+            angular_page.fill_password_field(password)
+        with allure.step('Заполнить описание пользователя невалидным значением'):
+            angular_page.fill_description_field(description)
         with allure.step('Нажать на кнопку "Login"'):
             angular_page.click_login_button()
         with allure.step('Проверить текст ошибки'):

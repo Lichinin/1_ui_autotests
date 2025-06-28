@@ -2,7 +2,6 @@ import allure
 from selenium.webdriver.common.by import By
 
 from constants.constants import Constants
-from helpers.data_helpers import DataHelper
 from pages.base_page import BasePage
 
 
@@ -20,18 +19,6 @@ class AngularPage(BasePage):
     LOGOUT_LINK = (By.CSS_SELECTOR, 'a[href="#/login"]')
     DANGER_ALERT = (By.CLASS_NAME, 'alert-danger ')
 
-    @allure.step('Заполнить поле "username" валидным значением')
-    def fill_username_field_valid(self):
-        self.fill_field(self.LOGIN_FIELD, Constants.ANGULAR_VALID_LOGIN)
-
-    @allure.step('Заполнить поле "password" валидным значением')
-    def fill_password_field_valid(self):
-        self.fill_field(self.PASSWORD_FIELD, Constants.ANGULAR_VALID_PASS)
-
-    @allure.step('Заполнить поле "description" валидным значением')
-    def fill_description_field_valid(self):
-        self.fill_field(self.LOGIN_DESCRIPTION_FIELD, Constants.ANGULAR_VALID_DESC)
-
     @allure.step('Нажать кнопку "Login"')
     def click_login_button(self):
         self.click_button(self.LOGIN_BUTTON)
@@ -40,17 +27,17 @@ class AngularPage(BasePage):
     def click_logout_button(self):
         self.click_button(self.LOGOUT_LINK)
 
-    @allure.step('Заполнить поле "username" невалидным значением')
-    def fill_username_field_invalid(self):
-        self.fill_field(self.LOGIN_FIELD, DataHelper.random_login_data()['login'])
+    @allure.step('Заполнить поле "username"')
+    def fill_username_field(self, value):
+        self.fill_field(self.LOGIN_FIELD, value)
 
-    @allure.step('Заполнить поле "password" невалидным значением')
-    def fill_password_field_invalid(self):
-        self.fill_field(self.PASSWORD_FIELD, DataHelper.random_login_data()['password'])
+    @allure.step('Заполнить поле "password"')
+    def fill_password_field(self, value):
+        self.fill_field(self.PASSWORD_FIELD, value)
 
-    @allure.step('Заполнить поле "description" невалидным значением')
-    def fill_description_field_invalid(self):
-        self.fill_field(self.LOGIN_DESCRIPTION_FIELD, DataHelper.random_login_data()['description'])
+    @allure.step('Заполнить поле "description"')
+    def fill_description_field(self, value):
+        self.fill_field(self.LOGIN_DESCRIPTION_FIELD, value)
 
     @allure.step('Проверить что поле "Username" отображается')
     def check_username_field_visible(self):
