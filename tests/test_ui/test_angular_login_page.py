@@ -15,6 +15,8 @@ class TestAngularLoginPage:
             angular_page.check_username_field_visible()
         with allure.step('Проверить что есть атрибут "text"'):
             angular_page.check_username_text_attr()
+        with allure.step('Проверить "label" поля "Username"'):
+            angular_page.check_username_label()
 
     @allure.story('Form Elements')
     @allure.severity(allure.severity_level.NORMAL)
@@ -24,6 +26,8 @@ class TestAngularLoginPage:
             angular_page.check_password_field_visible()
         with allure.step('Проверить что есть атрибут "text"'):
             angular_page.check_password_text_attr()
+        with allure.step('Проверить "label" поля "Password"'):
+            angular_page.check_password_label()
 
     @allure.story('Login Button')
     @allure.severity(allure.severity_level.NORMAL)

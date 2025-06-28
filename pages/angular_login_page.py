@@ -11,8 +11,10 @@ class AngularPage(BasePage):
     ENDPOINT_URL = '/angularjs-protractor/registeration/#/login'
 
     LOGIN_FIELD = (By.ID, 'username')
+    LOGIN_FIELD_LABEL = (By.XPATH, '//label[@for="username"]')
     LOGIN_DESCRIPTION_FIELD = (By.ID, 'formly_1_input_username_0')
     PASSWORD_FIELD = (By.ID, 'password')
+    PASSWORD_FIELD_LABEL = (By.XPATH, '//label[@for="password"]')
     LOGIN_BUTTON = (By. CLASS_NAME, 'btn-danger')
     LOGIN_MESSAGE_SUCCESS = (By.XPATH, "//p[normalize-space()=\"You're logged in!!\"]")
     LOGOUT_LINK = (By.CSS_SELECTOR, 'a[href="#/login"]')
@@ -59,6 +61,12 @@ class AngularPage(BasePage):
         text_attr_value = self.get_element_attribute(self.LOGIN_FIELD, 'value')
         assert text_attr_value is not None, "Атрибут 'text' отсутствует у поля 'Username'"
 
+    @allure.step('Проверить значение "label" поля "Username"')
+    def check_username_label(self):
+        label_text = self.get_element_text(self.LOGIN_FIELD_LABEL)
+        expected_label = 'Username'
+        assert label_text == expected_label, f'Ожидалось: "{expected_label}", получен: "{label_text}"'
+
     @allure.step('Проверить что поле "Password" отображается')
     def check_password_field_visible(self):
         assert self.is_element_visible(self.PASSWORD_FIELD), 'Поле "Password" не отображается на странице'
@@ -67,6 +75,12 @@ class AngularPage(BasePage):
     def check_password_text_attr(self):
         text_attr_value = self.get_element_attribute(self.PASSWORD_FIELD, 'value')
         assert text_attr_value is not None, "Атрибут 'text' отсутствует у поля 'Password'"
+
+    @allure.step('Проверить значение "label" поля "Passwowd"')
+    def check_password_label(self):
+        label_text = self.get_element_text(self.PASSWORD_FIELD_LABEL)
+        expected_label = 'Password'
+        assert label_text == expected_label, f'Ожидалось: "{expected_label}", получен: "{label_text}"'
 
     @allure.step('Проверить, что кнопка "Login" неактивна')
     def check_login_button_is_disabled(self):
