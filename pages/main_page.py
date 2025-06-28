@@ -41,6 +41,7 @@ class MainPage(BasePage):
 
     POPULAR_COURSES_SLIDER = (By.CLASS_NAME, 'swiper-container-c50f9f0')
     ACTIVE_SLIDE = (By.CSS_SELECTOR, 'div[data-id="c50f9f0"] .swiper-slide-active')
+    SLIDE_TITLE = (By.CSS_SELECTOR, ".pp-info-box-title")
     NEXT_SLIDE_BUTTON = (By.CLASS_NAME, 'swiper-button-next-c50f9f0')
     PREVIOUS_SLIDE_BUTTON = (By.CLASS_NAME, 'swiper-button-prev-c50f9f0')
     SLIDER_MOST_POPULAR = (By.CLASS_NAME, 'elementor-element-166618a')
@@ -62,6 +63,12 @@ class MainPage(BasePage):
     def get_active_slide_index(self):
         active_slide = self.get_element(MainPage.ACTIVE_SLIDE)
         return active_slide.get_attribute("data-swiper-slide-index")
+
+    @allure.step('Получить title активного слайда')
+    def get_active_slide_title(self):
+        active_slide = self.get_element(MainPage.ACTIVE_SLIDE)
+        title = active_slide.find_element(*MainPage.SLIDE_TITLE).text.strip()
+        return title
 
     @allure.step('Переключиться на следующий слайд')
     def click_next_slide(self):

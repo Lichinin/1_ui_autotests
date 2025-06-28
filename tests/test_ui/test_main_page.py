@@ -52,26 +52,34 @@ class TestMainPage:
         with allure.step('Проверить данные контактов в footer'):
             main_page.check_footer_contacts_data()
 
-    # @allure.story('Slider Interaction')
-    # @allure.severity(allure.severity_level.NORMAL)
-    # @allure.title('Проверка работы слайдера популярных курсов')
-    # def test_popular_courses_slider(self, main_page: MainPage):
-    #     with allure.step('Прокрутить до слайдера "Most Popular"'):
-    #         main_page.scroll_to_most_popular()
-    #     main_page.close_popup()
-    #     first_index = main_page.get_active_slide_index()
+    @allure.story('Slider Interaction')
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.title('Проверка работы слайдера популярных курсов')
+    def test_popular_courses_slider(self, main_page: MainPage):
+        with allure.step('Прокрутить до слайдера "Most Popular"'):
+            main_page.scroll_to_most_popular()
+        main_page.close_popup()
 
-    #     with allure.step('Переключиться на следующий слайд'):
-    #         main_page.click_next_slide()
-    #     second_index = main_page.get_active_slide_index()
+        with allure.step('Получитьtitle первого слайда'):
+            first_slide_title = main_page.get_active_slide_title()
 
-    #     with allure.step('Вернуться к предыдущему слайду)'):
-    #         main_page.click_prev_slide()
+        with allure.step('Переключиться на следующий слайд'):
+            main_page.click_next_slide()
 
-    #     third_index = main_page.get_active_slide_index()
+        with allure.step('Получить title второго слайда'):
+            second_slide_title = main_page.get_active_slide_title()
 
-    #     with allure.step('Проверить переключения слайдера'):
-    #         assert first_index == third_index and int(second_index) == int(first_index) + 1
+        with allure.step('Проверить, что слайд изменился'):
+            assert first_slide_title != second_slide_title
+
+        with allure.step('Вернуться к предыдущему слайду)'):
+            main_page.click_prev_slide()
+
+        with allure.step('Получить title второго слайда'):
+            third_slide_title = main_page.get_active_slide_title()
+
+        with allure.step('Проверить, что переключились на предыдущий слайд'):
+            assert first_slide_title == third_slide_title
 
     @allure.story('Best Courses')
     @allure.severity(allure.severity_level.NORMAL)
