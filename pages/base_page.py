@@ -70,7 +70,7 @@ class BasePage:
     def click_button(self, button):
         self.get_element(button).click()
 
-    @allure.step('Кликнуть текст элемента')
+    @allure.step('Получить текст элемента')
     def get_element_text(self, locator):
         element = self.get_element(locator)
         return element.text
@@ -117,9 +117,9 @@ class BasePage:
             f'Текст элемента не совпадает. Ожидалось: "{expected_text}", получено: "{element_text}"'
 
     @allure.step('Проверить количество элементов в "{elements_list}"')
-    def check_element_list_lenght(self, elements_list, excepted_len):
-        assert len(elements_list) == excepted_len, \
-            f'Количество элементов не совпадает. Ожидалось: {excepted_len}, найдено: {len(elements_list)}'
+    def check_element_list_lenght(self, elements_list, expected_len):
+        assert len(elements_list) == expected_len, \
+            f'Количество элементов не совпадает. Ожидалось: {expected_len}, найдено: {len(elements_list)}'
 
     @allure.step('Сравнить элементы списков')
     def verify_list_items(self, actual_list, expected_list, msg_prefix=""):

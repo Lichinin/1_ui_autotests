@@ -95,7 +95,7 @@ class MainPage(BasePage):
         actions.send_keys(Keys.PAGE_DOWN).perform()
 
     @allure.step('Получить данные карточек популярных курсов')
-    def get_popular_couses_data(self):
+    def get_popular_courses_data(self):
         courses = self.get_elements(MainPage.POPULAR_COURSE_CARD)
         course_data_list = []
         for course in courses:
@@ -203,7 +203,7 @@ class MainPage(BasePage):
     @allure.step('Проверить значения контактов в footer')
     def check_footer_contacts_data(self):
         contacts = self.get_footer_contacts_data()
-        self.verify_list_items(contacts, Constants.FOOTER_CONTACTS_LIST, 'Header крнтакт')
+        self.verify_list_items(contacts, Constants.FOOTER_CONTACTS_LIST, 'Footer крнтакт')
 
     @allure.step('Проверить количество контактов в header')
     def check_header_contacts_lenght(self):
@@ -213,16 +213,16 @@ class MainPage(BasePage):
     @allure.step('Проверить значения контактов в header')
     def check_header_contacts_data(self):
         contacts = self.get_header_contacts_data()
-        self.verify_list_items(contacts, Constants.HEADER_CONTACT_LIST, 'Footer контакт')
+        self.verify_list_items(contacts, Constants.HEADER_CONTACT_LIST, 'Header контакт')
 
     @allure.step('Проверить количество курсов в блоке лучших курсов')
     def check_best_courses_lenght(self):
-        courses_data_list = self.get_popular_couses_data()
+        courses_data_list = self.get_popular_courses_data()
         self.check_element_list_lenght(courses_data_list, 4)
 
     @allure.step('Проверить данные курсов в блоке лучших курсов')
     def check_best_courses_data(self):
-        course_data = self.get_popular_couses_data()
+        course_data = self.get_popular_courses_data()
         self.verify_list_items(course_data, Constants.BEST_COURSES_DATA_LIST, 'Курс')
 
     @allure.step('Проверить URL страницы Lifetime Membership')

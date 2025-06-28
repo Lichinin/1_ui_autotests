@@ -54,7 +54,7 @@ class AngularPage(BasePage):
     def check_username_field_visible(self):
         assert self.is_element_visible(self.LOGIN_FIELD), 'Поле "Username" не отображается на странице'
 
-    @allure.step('Проверить налиие атрибута "text" у поле "Username"')
+    @allure.step('Проверить наличие атрибута "text" у поле "Username"')
     def check_username_text_attr(self):
         text_attr_value = self.get_element_attribute(self.LOGIN_FIELD, 'value')
         assert text_attr_value is not None, "Атрибут 'text' отсутствует у поля 'Username'"
@@ -63,7 +63,7 @@ class AngularPage(BasePage):
     def check_password_field_visible(self):
         assert self.is_element_visible(self.PASSWORD_FIELD), 'Поле "Password" не отображается на странице'
 
-    @allure.step('Проверить налиие атрибута "text" у поле "Username"')
+    @allure.step('Проверить наличие атрибута "text" у поле "Password"')
     def check_password_text_attr(self):
         text_attr_value = self.get_element_attribute(self.PASSWORD_FIELD, 'value')
         assert text_attr_value is not None, "Атрибут 'text' отсутствует у поля 'Password'"
