@@ -18,7 +18,7 @@ class TestMainPage:
             main_page.check_navbar_visible()
 
         with allure.step('Проверить видимость блока курсов'):
-            main_page.check_popular_courses_visible()
+            main_page.check_best_courses_visible()
 
         with allure.step('Проверить видимость футера'):
             main_page.check_footer_visible()
@@ -76,14 +76,14 @@ class TestMainPage:
     @allure.story('Best Courses')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка блока "Best Selenium Certification Course Online"')
-    def test_best_courses_menu(self, main_page: MainPage, index, expected_data):
+    def test_best_courses_menu(self, main_page: MainPage):
         with allure.step('Проверить видимость блока курсов'):
             main_page.check_best_courses_visible()
 
         with allure.step('Проверить количество курсов в блоке'):
             main_page.check_best_courses_lenght()
 
-        with allure.step(f'Проверить данные карточки курса #{index + 1}'):
+        with allure.step('Проверить данные карточек курсов'):
             main_page.check_best_courses_data()
 
     @allure.story('Navigation Menu')

@@ -162,23 +162,23 @@ class MainPage(BasePage):
 
     @allure.step('Проверить видимость header')
     def check_header_visible(self):
-        assert self.is_element_visible(self.HEADER)
+        assert self.is_element_visible(self.HEADER), 'Header не отображается на странице'
 
     @allure.step('Проверить видимость навигационной панели')
     def check_navbar_visible(self):
-        assert self.is_element_visible(self.NAV_BAR)
+        assert self.is_element_visible(self.NAV_BAR), 'Навигационная панель не отображается'
 
-    @allure.step('Проверить видимость блока популярных курсов')
-    def check_popular_courses_visible(self):
-        assert self.is_element_visible(self.BEST_COURSES)
+    @allure.step('Проверить видимость блока лучших курсов')
+    def check_best_courses_visible(self):
+        assert self.is_element_visible(self.BEST_COURSES), 'Блок лучших курсов не отображается'
 
     @allure.step('Проверить видимость footer')
     def check_footer_visible(self):
-        assert self.is_element_visible(self.FOOTER)
+        assert self.is_element_visible(self.FOOTER), 'Footer не отображается на странице'
 
     @allure.step('Проверить видимость кнопки регистрации')
     def check_register_button_visible(self):
-        assert self.is_element_visible(self.REGISTER_BUTTON)
+        assert self.is_element_visible(self.REGISTER_BUTTON), 'Кнопка "Register Now" не отображается'
 
     @allure.step('Проверить фон кнопки регистрации')
     def check_register_button_background(self):
@@ -196,67 +196,17 @@ class MainPage(BasePage):
     @allure.step('Проверить значения контактов в footer')
     def check_footer_contacts_data(self):
         contacts = self.get_footer_contacts_data()
-        errors = []
-        try:
-            assert contacts[0] == Constants.FIRST_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 1: {e}')
-        try:
-            assert contacts[1] == Constants.SECOND_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 2: {e}')
-        try:
-            assert contacts[2] == Constants.THIRD_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 3: {e}')
-        try:
-            assert contacts[3] == Constants.FOURTH_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 4: {e}')
-        try:
-            assert contacts[4] == Constants.FIFTH_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 5: {e}')
-
-        if errors:
-            raise AssertionError(f'Найдены ошибки в контактах: {errors}')
+        self.verify_list_items(contacts, Constants.FOOTER_CONTACTS_LIST, 'Header крнтакт')
 
     @allure.step('Проверить количество контактов в header')
     def check_header_contacts_lenght(self):
         contacts = self.get_header_contacts_data()
         self.check_element_list_lenght(contacts, 5)
 
-    @allure.step('Проверить значения контактов в footer')
+    @allure.step('Проверить значения контактов в header')
     def check_header_contacts_data(self):
         contacts = self.get_header_contacts_data()
-        errors = []
-        try:
-            assert contacts[0] == Constants.FIRST_HEADER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 1: {e}')
-        try:
-            assert contacts[1] == Constants.SECOND_HEADER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 2: {e}')
-        try:
-            assert contacts[2] == Constants.THIRD_HEADER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 3: {e}')
-        try:
-            assert contacts[3] == Constants.FOURTH_HEADER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 4: {e}')
-        try:
-            assert contacts[4] == Constants.FIFTH_HEADER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 5: {e}')
-
-        if errors:
-            raise AssertionError(f'Найдены ошибки в контактах: {errors}')
-
-    @allure.step('Проверить видимость блока лучших курсов')
-    def check_best_courses_visible(self):
-        assert self.is_element_visible(self.BEST_COURSES)
+        self.verify_list_items(contacts, Constants.HEADER_CONTACT_LIST, 'Footer контакт')
 
     @allure.step('Проверить количество курсов в блоке лучших курсов')
     def check_best_courses_lenght(self):
@@ -266,31 +216,18 @@ class MainPage(BasePage):
     @allure.step('Проверить данные курсов в блоке лучших курсов')
     def check_best_courses_data(self):
         course_data = self.get_popular_couses_data()
-        errors = []
-        try:
-            assert course_data[0] == Constants.FIRS_BEST_COURSE_DATA
-        except AssertionError as e:
-            errors.append(f'Курс 1: {e}')
-        try:
-            assert course_data[1] == Constants.SECOND_BEST_COURSE_DATA
-        except AssertionError as e:
-            errors.append(f'Курс 2: {e}')
-        try:
-            assert course_data[2] == Constants.THIRD_BEST_COURSE_DATA
-        except AssertionError as e:
-            errors.append(f'Курс 3: {e}')
-        try:
-            assert course_data[3] == Constants.FOURTH_BEST_COURSE_DATA
-        except AssertionError as e:
-            errors.append(f'Курс 4: {e}')
-
-        if errors:
-            raise AssertionError(f'Найдены ошибки в курсах: {errors}')
+        self.verify_list_items(course_data, Constants.BEST_COURSES_DATA_LIST, 'Курс')
 
     @allure.step('Проверить URL страницы Lifetime Membership')
     def check_url_lifetime_membership_page(self):
-        assert self.get_current_url() == Constants.LIFETIME_MEMEDERSHIP_URL
+        current_url = self.get_current_url()
+        expected_url = Constants.LIFETIME_MEMEDERSHIP_URL
+        assert current_url == expected_url, \
+            f'URL не совпадает. Ожидалось: "{expected_url}", получено: "{current_url}"'
 
     @allure.step('Проверить title страницы Lifetime Membership')
     def check_title_lifetime_membership_page(self):
-        assert Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE in self.get_page_title()
+        page_title = self.get_page_title()
+        expected_title = Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE
+        assert expected_title in page_title, \
+            f'Title страницы некорректный. Ожидалось: "{expected_title}", получено: "{page_title}"'

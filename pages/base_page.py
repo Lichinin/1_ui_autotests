@@ -107,13 +107,21 @@ class BasePage:
     def check_element_background_colour(self, locator, expected_colour):
         element = self.get_element(locator)
         element_colour = element.value_of_css_property('background-color')
-        assert element_colour == expected_colour
+        assert element_colour == expected_colour, \
+            f'Цвет фона не совпадает. Ожидалось: {expected_colour}, получено: {element_colour}'
 
     @allure.step('Проверить текст элемента "{locator}"')
     def check_element_text(self, locator, expected_text):
         element_text = self.get_element_text(locator)
-        assert element_text == expected_text
+        assert element_text == expected_text, \
+            f'Текст элемента не совпадает. Ожидалось: "{expected_text}", получено: "{element_text}"'
 
     @allure.step('Проверить количество элементов в "{elements_list}"')
     def check_element_list_lenght(self, elements_list, excepted_len):
-        assert len(elements_list) == excepted_len
+        assert len(elements_list) == excepted_len, \
+            f'Количество элементов не совпадает. Ожидалось: {excepted_len}, найдено: {len(elements_list)}'
+
+    @allure.step('Сравнить элементы списков')
+    def verify_list_items(self, actual_list, expected_list, msg_prefix=""):
+        for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
+            assert actual == expected, f'{msg_prefix} [{i}] не совпадает: {actual} != {expected}'
