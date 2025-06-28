@@ -18,25 +18,6 @@ class AngularPage(BasePage):
     LOGOUT_LINK = (By.CSS_SELECTOR, 'a[href="#/login"]')
     DANGER_ALERT = (By.CLASS_NAME, 'alert-danger ')
 
-    @allure.step('Получить текст успешного входа')
-    def get_sucessful_login_text(self):
-        text = self.get_element_text(self.LOGIN_MESSAGE_SUCCESS)
-        return text
-
-    @allure.step('Получить текст ошибки входа')
-    def get_unsucessful_login_text(self):
-        self.get_element(self.DANGER_ALERT)
-        text = self.get_element(self.DANGER_ALERT).text
-        return text
-
-    @allure.step('Получить атрибут "text" поля "username"')
-    def get_username_text_attr(self):
-        return self.get_element_attribute(self.LOGIN_FIELD, 'value')
-
-    @allure.step('Получить атрибут "text" поля "password"')
-    def get_password_text_attr(self):
-        return self.get_element_attribute(self.PASSWORD_FIELD, 'value')
-
     @allure.step('Заполнить поле "username" валидным значением')
     def fill_username_field_valid(self):
         self.fill_field(self.LOGIN_FIELD, Constants.ANGULAR_VALID_LOGIN)
@@ -68,3 +49,45 @@ class AngularPage(BasePage):
     @allure.step('Заполнить поле "description" невалидным значением')
     def fill_description_field_invalid(self):
         self.fill_field(self.LOGIN_DESCRIPTION_FIELD, DataHelper.random_login_data()['description'])
+
+    @allure.step('Проверить что поле "Username" отображается')
+    def check_username_field_visible(self):
+        assert self.is_element_visible(self.LOGIN_FIELD)
+
+    @allure.step('Проверить налиие атрибута "text" у поле "Username"')
+    def check_username_text_attr(self):
+        text_attr_value = self.get_element_attribute(self.LOGIN_FIELD, 'value')
+        assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
+
+    @allure.step('Проверить что поле "Password" отображается')
+    def check_password_field_visible(self):
+        assert self.is_element_visible(self.PASSWORD_FIELD)
+
+    @allure.step('Проверить налиие атрибута "text" у поле "Username"')
+    def check_password_text_attr(self):
+        text_attr_value = self.get_element_attribute(self.PASSWORD_FIELD, 'value')
+        assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
+
+    @allure.step('Проверить, что кнопка "Login" неактивна')
+    def check_login_button_is_disabled(self):
+        assert self.get_element_attribute(AngularPage.LOGIN_BUTTON, 'disabled') == 'true'
+
+    @allure.step('Проверить текст кнопки "Login"')
+    def check_login_button_text(self):
+        assert self.get_element_text(AngularPage.LOGIN_BUTTON) == 'Login'
+
+    @allure.step('Проверить текст успешного входа')
+    def check_login_success_text(self):
+        text = self.get_element_text(self.LOGIN_MESSAGE_SUCCESS)
+        assert text == Constants.ANGULAR_SUCCESS_LOGIN_TEXT
+
+    @allure.step('Проверить текст неуспешного входа')
+    def check_login_unsuccess_text(self):
+        self.get_element(self.DANGER_ALERT)
+        text = self.get_element_text(self.DANGER_ALERT)
+        assert text == Constants.ANGULAR_UNSUCCESS_LOGIN_TEXT
+
+    @allure.step('Проверить, что пользователь перенаправлён обратно на форму входа')
+    def check_logout_redirect(self):
+        assert self.get_element(self.LOGIN_FIELD)
+        assert self.get_element(self.PASSWORD_FIELD)

@@ -1,6 +1,5 @@
 import allure
 
-from constants.constants import Constants
 from pages.angular_login_page import AngularPage
 
 
@@ -13,29 +12,27 @@ class TestAngularLoginPage:
     @allure.title('Проверка видимости поля "Username"')
     def test_username_is_visible(self, angular_page: AngularPage):
         with allure.step('Проверить что поле "Username" отображается'):
-            assert angular_page.is_element_visible(angular_page.LOGIN_FIELD)
+            angular_page.check_username_field_visible()
         with allure.step('Проверить что есть атрибут "text"'):
-            text_attr_value = angular_page.get_username_text_attr()
-            assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
+            angular_page.check_username_text_attr()
 
     @allure.story('Form Elements')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка видимости поля "Password"')
     def test_password_is_visible(self, angular_page: AngularPage):
         with allure.step('Проверить что поле "Password" отображается'):
-            assert angular_page.is_element_visible(angular_page.PASSWORD_FIELD)
+            angular_page.check_password_field_visible()
         with allure.step('Проверить что есть атрибут "text"'):
-            text_attr_value = angular_page.get_password_text_attr()
-            assert text_attr_value is not None, "Атрибут 'text' отсутствует у элемента"
+            angular_page.check_password_text_attr()
 
     @allure.story('Login Button')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка, что кнопка "Login" изначально отключена')
     def test_login_button_is_disabled(self, angular_page: AngularPage):
         with allure.step('Проверить что кнопка "Login" не активна'):
-            assert angular_page.get_element_attribute(AngularPage.LOGIN_BUTTON, 'disabled') == 'true'
+            angular_page.check_login_button_is_disabled()
         with allure.step('Проверить, что текстом кнопки является "Login"'):
-            assert angular_page.get_element_text(AngularPage.LOGIN_BUTTON) == 'Login'
+            angular_page.check_login_button_text()
 
     @allure.story('Authorization')
     @allure.severity(allure.severity_level.CRITICAL)
@@ -50,12 +47,11 @@ class TestAngularLoginPage:
         with allure.step('Нажать на кнопку "Login"'):
             angular_page.click_login_button()
         with allure.step('Проверить текст успешного входа'):
-            text = angular_page.get_sucessful_login_text()
-            assert text == Constants.ANGULAR_SUCCESS_LOGIN_TEXT
+            angular_page.check_login_success_text()
 
     @allure.story('Authorization')
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Неудачная авторизация с неверным логином')
+    @allure.title('Неудачная авторизация с невалидными данными')
     def test_invalid_autorization(self, angular_page: AngularPage):
         with allure.step('Заполнить поле "Username" неверным значением'):
             angular_page.fill_username_field_invalid()
@@ -66,8 +62,7 @@ class TestAngularLoginPage:
         with allure.step('Нажать на кнопку "Login"'):
             angular_page.click_login_button()
         with allure.step('Проверить текст ошибки'):
-            text = angular_page.get_unsucessful_login_text()
-            assert text == Constants.ANGULAR_UNSUCCESS_LOGIN_TEXT
+            angular_page.check_login_unsuccess_text()
 
     @allure.story('Logout')
     @allure.severity(allure.severity_level.NORMAL)
@@ -81,5 +76,4 @@ class TestAngularLoginPage:
         with allure.step('Нажать на ссылку "Logout"'):
             angular_page.click_logout_button()
         with allure.step('Проверить, что пользователь перенаправлён обратно на форму входа'):
-            assert angular_page.get_element(angular_page.LOGIN_FIELD)
-            assert angular_page.get_element(angular_page.PASSWORD_FIELD)
+            angular_page.check_logout_redirect()

@@ -162,23 +162,23 @@ class MainPage(BasePage):
 
     @allure.step('Проверить видимость header')
     def check_header_visible(self):
-        self.is_element_visible(self.HEADER)
+        assert self.is_element_visible(self.HEADER)
 
     @allure.step('Проверить видимость навигационной панели')
     def check_navbar_visible(self):
-        self.is_element_visible(self.NAV_BAR)
+        assert self.is_element_visible(self.NAV_BAR)
 
     @allure.step('Проверить видимость блока популярных курсов')
     def check_popular_courses_visible(self):
-        self.is_element_visible(self.BEST_COURSES)
+        assert self.is_element_visible(self.BEST_COURSES)
 
     @allure.step('Проверить видимость footer')
     def check_footer_visible(self):
-        self.is_element_visible(self.FOOTER)
+        assert self.is_element_visible(self.FOOTER)
 
     @allure.step('Проверить видимость кнопки регистрации')
     def check_register_button_visible(self):
-        self.is_element_visible(self.REGISTER_BUTTON)
+        assert self.is_element_visible(self.REGISTER_BUTTON)
 
     @allure.step('Проверить фон кнопки регистрации')
     def check_register_button_background(self):
@@ -256,12 +256,12 @@ class MainPage(BasePage):
 
     @allure.step('Проверить видимость блока лучших курсов')
     def check_best_courses_visible(self):
-        self.is_element_visible(self.BEST_COURSES)
+        assert self.is_element_visible(self.BEST_COURSES)
 
     @allure.step('Проверить количество курсов в блоке лучших курсов')
     def check_best_courses_lenght(self):
         courses_data_list = self.get_popular_couses_data()
-        assert len(courses_data_list) == 4
+        self.check_element_list_lenght(courses_data_list, 4)
 
     @allure.step('Проверить данные курсов в блоке лучших курсов')
     def check_best_courses_data(self):
