@@ -32,31 +32,3 @@ class AssertionHelper:
 
         if errors:
             raise AssertionError(f'Найдены ошибки в контактах: {errors}')
-
-    @staticmethod
-    @allure.step('Проверить значения контактов в footer')
-    def assert_footer_contact(contacts):
-        errors = []
-        try:
-            assert contacts[0] == Constants.FIRST_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 1: {e}')
-        try:
-            assert contacts[1] == Constants.SECOND_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 2: {e}')
-        try:
-            assert contacts[2] == Constants.THIRD_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 3: {e}')
-        try:
-            assert contacts[3] == Constants.FOURTH_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 4: {e}')
-        try:
-            assert contacts[4] == Constants.FIFTH_FOOTER_CONTACT_DATA
-        except AssertionError as e:
-            errors.append(f'Контакт 5: {e}')
-
-        if errors:
-            raise AssertionError(f'Найдены ошибки в контактах: {errors}')

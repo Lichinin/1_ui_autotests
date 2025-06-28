@@ -24,7 +24,7 @@ class Constants:
     REGISTER_BUTTON_TEXT = 'Register Now'
     REGISTER_BUTTON_COLOUR = 'rgba(230, 51, 44, 1)'
 
-    FIRS_POPULAR_COURSE_DATA = {
+    FIRS_BEST_COURSE_DATA = {
         'title': 'Lifetime Membership',
         'description': 'Join all Ongoing and Future live training batches for FREE. 30+ Most Demanding Automation courses with Lifetime Access.',
         'logo_icon': True,
@@ -33,7 +33,7 @@ class Constants:
         'button_link': 'https://www.way2automation.com/lifetime-membership-club/'
     }
 
-    SECOND_POPULAR_COURSE_DATA = {
+    SECOND_BEST_COURSE_DATA = {
         'title': 'Online Training',
         'description': 'Selenium Training and Online sessions will give you a chance to interact with our Selenium experts and you will get guidance on Selenium.',
         'logo_icon': True,
@@ -42,7 +42,7 @@ class Constants:
         'button_link': 'https://www.way2automation.com/selenium-training/online-training-webinars/'
     }
 
-    THIRD_POPULAR_COURSE_DATA = {
+    THIRD_BEST_COURSE_DATA = {
         'title': 'Video Tutorials\n(Best Selenium Tutorial)',
         'description': '30+ Automation tools videos are available with Life time access + you will get entire module codes and library files along with the video access including our most demanding 100+ hours of Selenium tutorial library',
         'logo_icon': True,
@@ -51,7 +51,7 @@ class Constants:
         'button_link': 'https://www.selenium-tutorial.com/courses/'
     }
 
-    FOURTH_POPULAR_COURSE_DATA = {
+    FOURTH_BEST_COURSE_DATA = {
         'title': 'Corporate Training',
         'description': 'Way2Automation provides comprehensive solutions to Corporate in building independent automation teams',
         'logo_icon': True,

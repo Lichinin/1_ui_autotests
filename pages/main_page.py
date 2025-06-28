@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from constants.constants import Constants
 from pages.base_page import BasePage
 
 
@@ -15,7 +16,7 @@ class MainPage(BasePage):
     HEADER = (By.ID, 'ast-desktop-header')
     NAV_BAR = (By.ID, 'site-navigation')
     REGISTER_BUTTON = (By.LINK_TEXT, 'Register Now')
-    COURSES_LIST = (By.CSS_SELECTOR, 'section[data-id="5b4952c1"]')
+    BEST_COURSES = (By.CSS_SELECTOR, 'section[data-id="5b4952c1"]')
     FOOTER = (By.CSS_SELECTOR, 'div[data-elementor-type="footer"]')
     HEADER_CONTACT_ELEMENT = (
         By.CSS_SELECTOR, '.elementor-icon-list-items > .elementor-inline-item'
@@ -158,3 +159,138 @@ class MainPage(BasePage):
     @allure.step('Нажать кнопку "Lifetime Membership"')
     def click_lifetime_membership_button(self):
         self.click_button(self.LIFETIME_MEMBERSHIP_BUTTON)
+
+    @allure.step('Проверить видимость header')
+    def check_header_visible(self):
+        self.is_element_visible(self.HEADER)
+
+    @allure.step('Проверить видимость навигационной панели')
+    def check_navbar_visible(self):
+        self.is_element_visible(self.NAV_BAR)
+
+    @allure.step('Проверить видимость блока популярных курсов')
+    def check_popular_courses_visible(self):
+        self.is_element_visible(self.BEST_COURSES)
+
+    @allure.step('Проверить видимость footer')
+    def check_footer_visible(self):
+        self.is_element_visible(self.FOOTER)
+
+    @allure.step('Проверить видимость кнопки регистрации')
+    def check_register_button_visible(self):
+        self.is_element_visible(self.REGISTER_BUTTON)
+
+    @allure.step('Проверить фон кнопки регистрации')
+    def check_register_button_background(self):
+        self.check_element_background_colour(self.REGISTER_BUTTON, Constants.REGISTER_BUTTON_COLOUR)
+
+    @allure.step('Проверить текст кнопки регистрации')
+    def check_register_button_text(self):
+        self.check_element_text(self.REGISTER_BUTTON, Constants.REGISTER_BUTTON_TEXT)
+
+    @allure.step('Проверить количество контактов в footer')
+    def check_footer_contacts_lenght(self):
+        contacts = self.get_footer_contacts_data()
+        self.check_element_list_lenght(contacts, 5)
+
+    @allure.step('Проверить значения контактов в footer')
+    def check_footer_contacts_data(self):
+        contacts = self.get_footer_contacts_data()
+        errors = []
+        try:
+            assert contacts[0] == Constants.FIRST_FOOTER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 1: {e}')
+        try:
+            assert contacts[1] == Constants.SECOND_FOOTER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 2: {e}')
+        try:
+            assert contacts[2] == Constants.THIRD_FOOTER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 3: {e}')
+        try:
+            assert contacts[3] == Constants.FOURTH_FOOTER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 4: {e}')
+        try:
+            assert contacts[4] == Constants.FIFTH_FOOTER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 5: {e}')
+
+        if errors:
+            raise AssertionError(f'Найдены ошибки в контактах: {errors}')
+
+    @allure.step('Проверить количество контактов в header')
+    def check_header_contacts_lenght(self):
+        contacts = self.get_header_contacts_data()
+        self.check_element_list_lenght(contacts, 5)
+
+    @allure.step('Проверить значения контактов в footer')
+    def check_header_contacts_data(self):
+        contacts = self.get_header_contacts_data()
+        errors = []
+        try:
+            assert contacts[0] == Constants.FIRST_HEADER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 1: {e}')
+        try:
+            assert contacts[1] == Constants.SECOND_HEADER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 2: {e}')
+        try:
+            assert contacts[2] == Constants.THIRD_HEADER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 3: {e}')
+        try:
+            assert contacts[3] == Constants.FOURTH_HEADER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 4: {e}')
+        try:
+            assert contacts[4] == Constants.FIFTH_HEADER_CONTACT_DATA
+        except AssertionError as e:
+            errors.append(f'Контакт 5: {e}')
+
+        if errors:
+            raise AssertionError(f'Найдены ошибки в контактах: {errors}')
+
+    @allure.step('Проверить видимость блока лучших курсов')
+    def check_best_courses_visible(self):
+        self.is_element_visible(self.BEST_COURSES)
+
+    @allure.step('Проверить количество курсов в блоке лучших курсов')
+    def check_best_courses_lenght(self):
+        courses_data_list = self.get_popular_couses_data()
+        assert len(courses_data_list) == 4
+
+    @allure.step('Проверить данные курсов в блоке лучших курсов')
+    def check_best_courses_data(self):
+        course_data = self.get_popular_couses_data()
+        errors = []
+        try:
+            assert course_data[0] == Constants.FIRS_BEST_COURSE_DATA
+        except AssertionError as e:
+            errors.append(f'Курс 1: {e}')
+        try:
+            assert course_data[1] == Constants.SECOND_BEST_COURSE_DATA
+        except AssertionError as e:
+            errors.append(f'Курс 2: {e}')
+        try:
+            assert course_data[2] == Constants.THIRD_BEST_COURSE_DATA
+        except AssertionError as e:
+            errors.append(f'Курс 3: {e}')
+        try:
+            assert course_data[3] == Constants.FOURTH_BEST_COURSE_DATA
+        except AssertionError as e:
+            errors.append(f'Курс 4: {e}')
+
+        if errors:
+            raise AssertionError(f'Найдены ошибки в курсах: {errors}')
+
+    @allure.step('Проверить URL страницы Lifetime Membership')
+    def check_url_lifetime_membership_page(self):
+        assert self.get_current_url() == Constants.LIFETIME_MEMEDERSHIP_URL
+
+    @allure.step('Проверить title страницы Lifetime Membership')
+    def check_title_lifetime_membership_page(self):
+        assert Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE in self.get_page_title()

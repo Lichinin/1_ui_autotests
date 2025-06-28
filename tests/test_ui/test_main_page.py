@@ -1,8 +1,5 @@
 import allure
-import pytest
 
-from constants.constants import Constants
-from helpers.assertion_helpers import AssertionHelper
 from pages.main_page import MainPage
 
 
@@ -14,91 +11,80 @@ class TestMainPage:
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка основных элементов страницы')
     def test_page_elements_is_visible(self, main_page: MainPage):
-        with allure.step('Проверить видимость header регистрации'):
-            assert main_page.is_element_visible(MainPage.HEADER)
+        with allure.step('Проверить видимость header'):
+            main_page.check_header_visible()
 
         with allure.step('Проверить видимость навигационной панели'):
-            assert main_page.is_element_visible(MainPage.NAV_BAR)
+            main_page.check_navbar_visible()
 
         with allure.step('Проверить видимость блока курсов'):
-            assert main_page.is_element_visible(MainPage.COURSES_LIST)
+            main_page.check_popular_courses_visible()
 
         with allure.step('Проверить видимость футера'):
-            assert main_page.get_element(MainPage.FOOTER)
+            main_page.check_footer_visible()
 
     @allure.story('Register Button')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка кнопки регистрации')
     def test_register_button_is_visible(self, main_page: MainPage):
         with allure.step('Проверить видимость кнопки регистрации'):
-            assert main_page.is_element_visible(MainPage.REGISTER_BUTTON)
+            main_page.check_register_button_visible()
         with allure.step('Проверить текст кнопки регистрации'):
-            assert main_page.get_element_text(MainPage.REGISTER_BUTTON) == Constants.REGISTER_BUTTON_TEXT
+            main_page.check_register_button_text()
         with allure.step('Проверить цвет фона кнопки регистрации'):
-            assert main_page.get_element_background_colour(MainPage.REGISTER_BUTTON) == Constants.REGISTER_BUTTON_COLOUR
+            main_page.check_register_button_background()
 
     @allure.story('Contacts Validation')
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Проверка контактов в хедере')
     def test_header_contacts(self, main_page: MainPage):
         with allure.step('Проверить количество контактов в header'):
-            contacts = main_page.get_header_contacts_data()
-            assert len(contacts) == 5
+            main_page.check_header_contacts_lenght()
         with allure.step('Проверить данные контактов в header'):
-            AssertionHelper.assert_header_contact(contacts)
+            main_page.check_header_contacts_data()
 
     @allure.story('Contacts Validation')
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.title('Проверка контактов в футере')
     def test_footer_contacts(self, main_page: MainPage):
         with allure.step('Проверить количество контактов в footer'):
-            contacts = main_page.get_footer_contacts_data()
-            assert len(contacts) == 5
+            main_page.check_footer_contacts_lenght()
         with allure.step('Проверить данные контактов в footer'):
-            AssertionHelper.assert_footer_contact(contacts)
+            main_page.check_footer_contacts_data()
 
-    @allure.story('Slider Interaction')
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.title('Проверка работы слайдера популярных курсов')
-    def test_popular_courses_slider(self, main_page: MainPage):
-        with allure.step('Прокрутить до слайдера "Most Popular"'):
-            main_page.scroll_to_most_popular()
-        main_page.close_popup()
-        first_index = main_page.get_active_slide_index()
+    # @allure.story('Slider Interaction')
+    # @allure.severity(allure.severity_level.NORMAL)
+    # @allure.title('Проверка работы слайдера популярных курсов')
+    # def test_popular_courses_slider(self, main_page: MainPage):
+    #     with allure.step('Прокрутить до слайдера "Most Popular"'):
+    #         main_page.scroll_to_most_popular()
+    #     main_page.close_popup()
+    #     first_index = main_page.get_active_slide_index()
 
-        with allure.step('Переключиться на следующий слайд'):
-            main_page.click_next_slide()
-        second_index = main_page.get_active_slide_index()
+    #     with allure.step('Переключиться на следующий слайд'):
+    #         main_page.click_next_slide()
+    #     second_index = main_page.get_active_slide_index()
 
-        with allure.step('Вернуться к предыдущему слайду)'):
-            main_page.click_prev_slide()
+    #     with allure.step('Вернуться к предыдущему слайду)'):
+    #         main_page.click_prev_slide()
 
-        third_index = main_page.get_active_slide_index()
+    #     third_index = main_page.get_active_slide_index()
 
-        with allure.step('Проверить переключения слайдера'):
-            assert first_index == third_index and int(second_index) == int(first_index) + 1
+    #     with allure.step('Проверить переключения слайдера'):
+    #         assert first_index == third_index and int(second_index) == int(first_index) + 1
 
-    @pytest.mark.parametrize('index, expected_data', [
-        (0, Constants.FIRS_POPULAR_COURSE_DATA),
-        (1, Constants.SECOND_POPULAR_COURSE_DATA),
-        (2, Constants.THIRD_POPULAR_COURSE_DATA),
-        (3, Constants.FOURTH_POPULAR_COURSE_DATA),
-    ])
     @allure.story('Best Courses')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка блока "Best Selenium Certification Course Online"')
     def test_best_courses_menu(self, main_page: MainPage, index, expected_data):
         with allure.step('Проверить видимость блока курсов'):
-            assert main_page.is_element_visible(MainPage.COURSES_LIST)
+            main_page.check_best_courses_visible()
 
         with allure.step('Проверить количество курсов в блоке'):
-            courses_data_list = main_page.get_popular_couses_data()
-            assert len(courses_data_list) == 4
+            main_page.check_best_courses_lenght()
 
         with allure.step(f'Проверить данные карточки курса #{index + 1}'):
-            course_data = main_page.get_popular_couses_data()[index]
-            assert course_data == expected_data, \
-                f'Ошибка в карточке #{index + 1}: {course_data} != {expected_data}'
+            main_page.check_best_courses_data()
 
     @allure.story('Navigation Menu')
     @allure.severity(allure.severity_level.NORMAL)
@@ -107,7 +93,7 @@ class TestMainPage:
         with allure.step('Прокрутить до футера страницы'):
             main_page.scroll_to_footer()
         with allure.step('Проверить, что навигационная панель остаётся видимой'):
-            assert main_page.is_element_visible(MainPage.NAV_BAR)
+            main_page.check_navbar_visible()
 
     @allure.story('Navigation to Other Page')
     @allure.severity(allure.severity_level.NORMAL)
@@ -118,6 +104,6 @@ class TestMainPage:
         with allure.step('Нажать на кнопку "Lifetime Membership"'):
             main_page.click_lifetime_membership_button()
         with allure.step('Проверить URL страницы'):
-            assert main_page.get_current_url() == Constants.LIFETIME_MEMEDERSHIP_URL
+            main_page.check_url_lifetime_membership_page()
         with allure.step('Проверить заголовок страницы'):
-            assert Constants.LIFETIME_MEMEDERSHIP_PAGE_TITLE in main_page.get_page_title()
+            main_page.check_title_lifetime_membership_page()

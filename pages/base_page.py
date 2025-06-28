@@ -102,3 +102,18 @@ class BasePage:
     def get_element_background_colour(self, element):
         element = self.get_element(element)
         return element.value_of_css_property('background-color')
+
+    @allure.step('Проверить цвет фона элемента "{locator}"')
+    def check_element_background_colour(self, locator, expected_colour):
+        element = self.get_element(locator)
+        element_colour = element.value_of_css_property('background-color')
+        assert element_colour == expected_colour
+
+    @allure.step('Проверить текст элемента "{locator}"')
+    def check_element_text(self, locator, expected_text):
+        element_text = self.get_element_text(locator)
+        assert element_text == expected_text
+
+    @allure.step('Проверить количество элементов в "{elements_list}"')
+    def check_element_list_lenght(self, elements_list, excepted_len):
+        assert len(elements_list) == excepted_len
