@@ -71,8 +71,9 @@ class AngularPage(BasePage):
 
     @allure.step('Проверить, что кнопка "Login" неактивна')
     def check_login_button_is_disabled(self):
-        assert self.get_element_attribute(AngularPage.LOGIN_BUTTON, 'disabled') == 'true', \
-            'Кнопка "Login" должна быть disabled'
+        with allure.step('Проверить оступность кнопки'):
+            assert self.get_element_attribute(AngularPage.LOGIN_BUTTON, 'disabled') == 'true', \
+                'Кнопка "Login" должна быть disabled'
 
     @allure.step('Проверить текст кнопки "Login"')
     def check_login_button_text(self):
@@ -85,16 +86,27 @@ class AngularPage(BasePage):
     def check_login_success_text(self):
         actual_text = self.get_element_text(self.LOGIN_MESSAGE_SUCCESS)
         expected_text = Constants.ANGULAR_SUCCESS_LOGIN_TEXT
-        assert actual_text == expected_text, \
-            f'Текст успешного входа неверен. Ожидалось: "{expected_text}", получено: "{actual_text}"'
+        with allure.step('Сравнить текст сообщения'):
+            assert actual_text == expected_text, \
+                f'Текст успешного входа неверен. Ожидалось: "{expected_text}", получено: "{actual_text}"'
+
+    @allure.step('Проверить текст сообщение о авторизации')
+    def check_login(self, result):
+        if result == 'success':
+            self.check_login_success_text()
+        elif result == 'fault':
+            self.check_login_unsuccess_text()
+        elif result == 'no_logging':
+            self.check_login_button_is_disabled()
 
     @allure.step('Проверить текст неуспешного входа')
     def check_login_unsuccess_text(self):
         self.get_element(self.DANGER_ALERT)
         actual_text = self.get_element_text(self.DANGER_ALERT)
         expected_text = Constants.ANGULAR_UNSUCCESS_LOGIN_TEXT
-        assert actual_text == expected_text, \
-            f'Текст ошибки авторизации неверен. Ожидалось: "{expected_text}", получено: "{actual_text}"'
+        with allure.step('Сравнить текст сообщения'):
+            assert actual_text == expected_text, \
+                f'Текст ошибки авторизации неверен. Ожидалось: "{expected_text}", получено: "{actual_text}"'
 
     @allure.step('Проверить, что пользователь перенаправлён обратно на форму входа')
     def check_logout_redirect(self):
