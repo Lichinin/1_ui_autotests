@@ -90,15 +90,6 @@ class AngularPage(BasePage):
             assert actual_text == expected_text, \
                 f'Текст успешного входа неверен. Ожидалось: "{expected_text}", получено: "{actual_text}"'
 
-    @allure.step('Проверить текст сообщение о авторизации')
-    def check_login(self, result):
-        if result == 'success':
-            self.check_login_success_text()
-        elif result == 'fault':
-            self.check_login_unsuccess_text()
-        elif result == 'no_logging':
-            self.check_login_button_is_disabled()
-
     @allure.step('Проверить текст неуспешного входа')
     def check_login_unsuccess_text(self):
         self.get_element(self.DANGER_ALERT)
