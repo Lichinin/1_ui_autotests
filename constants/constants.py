@@ -20,6 +20,7 @@ class Constants:
     ANGULAR_VALID_DESC = 'angular'
     ANGULAR_VALID_PASS = 'password'
     ANGULAR_SUCCESS_LOGIN_TEXT = "You're logged in!!"
+    INAVLID_ANGULAR_SUCCESS_LOGIN_TEXT = "For yesy screenshots"
     ANGULAR_UNSUCCESS_LOGIN_TEXT = "Username or password is incorrect"
     REGISTER_BUTTON_TEXT = 'Register Now'
     REGISTER_BUTTON_COLOUR = 'rgba(230, 51, 44, 1)'
