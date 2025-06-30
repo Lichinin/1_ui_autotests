@@ -14,6 +14,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from config import Pathes, Urls
 from pages.angular_login_page import AngularPage
 from pages.main_page import MainPage
+from pages.sql_ex_page import SqlExPage
 
 
 def pytest_addoption(parser):
@@ -98,6 +99,10 @@ def angular_page(browser) -> AngularPage:
     browser.get(AngularPage.get_full_url())
     return AngularPage(browser)
 
+@pytest.fixture(scope='function')
+def sql_ex_page(browser) -> SqlExPage:
+    browser.get(Urls.SQL_EX_RU)
+    return SqlExPage(browser)
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):

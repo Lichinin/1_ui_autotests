@@ -7,6 +7,7 @@ class Timeouts:
 
 class Urls:
     BASE_URL = 'https://www.way2automation.com'
+    SQL_EX_RU = 'https://sql-ex.ru/'
 
 
 class Pathes:
