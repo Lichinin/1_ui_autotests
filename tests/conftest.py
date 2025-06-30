@@ -3,6 +3,7 @@ import logging
 import logging.handlers
 from logging.handlers import RotatingFileHandler
 
+import allure
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -96,3 +97,18 @@ def main_page(browser) -> MainPage:
 def angular_page(browser) -> AngularPage:
     browser.get(AngularPage.get_full_url())
     return AngularPage(browser)
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call" and report.failed:
+        browser = item.funcargs.get('browser')
+        if browser:
+            allure.attach(
+                browser.get_screenshot_as_png(),
+                name="screenshot_on_failure",
+                attachment_type=allure.attachment_type.PNG
+            )

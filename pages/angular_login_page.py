@@ -103,3 +103,17 @@ class AngularPage(BasePage):
     def check_logout_redirect(self):
         self.check_username_field_visible()
         self.check_password_field_visible()
+
+    @allure.step('Проверить текст успешного входа')
+    def check_login_text_and_get_screenshot(self):
+        actual_text = self.get_element_text(self.LOGIN_MESSAGE_SUCCESS)
+        expected_text = Constants.INAVLID_ANGULAR_SUCCESS_LOGIN_TEXT
+        with allure.step('Сравнить текст сообщения'):
+            assert actual_text == expected_text, \
+                f'Текст успешного входа неверен. Ожидалось: "{expected_text}", получено: "{actual_text}"'
+
+    @allure.step('Проверить значение "label" поля "Username"')
+    def check_username_label_invalid(self):
+        label_text = self.get_element_text(self.LOGIN_FIELD_LABEL)
+        expected_label = 'Not_Username'
+        assert label_text == expected_label, f'Ожидалось: "{expected_label}", получен: "{label_text}"'
