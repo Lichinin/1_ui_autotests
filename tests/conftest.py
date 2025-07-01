@@ -1,6 +1,7 @@
 import datetime
 import logging
 import logging.handlers
+import os
 from logging.handlers import RotatingFileHandler
 
 import allure
@@ -12,6 +13,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from config import Pathes, Urls
+from helpers.cookies_helper import CookiesHelper
 from pages.angular_login_page import AngularPage
 from pages.main_page import MainPage
 from pages.sql_ex_page import SqlExPage
@@ -117,3 +119,25 @@ def pytest_runtest_makereport(item, call):
                 name="screenshot_on_failure",
                 attachment_type=allure.attachment_type.PNG
             )
+
+@pytest.fixture(scope='function')
+def prepare_cookies(logger):
+    options = ChromeOptions()
+    options.add_argument("--start-maximized")
+    options.add_argument('--headless')
+
+    driver = webdriver.Chrome(options=options)
+    driver.logger = logger
+    driver.get(Urls.SQL_EX_RU)
+    page = SqlExPage(driver)
+
+    page.fill_login_field()
+    page.fill_passsword_field()
+    page.click_login_button()
+
+    CookiesHelper.save_cookies_to_file(driver)
+    driver.quit()
+
+    yield
+
+    CookiesHelper.delete_cookies_file()
