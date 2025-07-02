@@ -7,6 +7,9 @@ from pages.base_page import BasePage
 
 class AngularPage(BasePage):
 
+    def __init__(self, browser):
+        super().__init__(browser)
+
     ENDPOINT_URL = '/angularjs-protractor/registeration/#/login'
 
     LOGIN_FIELD = (By.ID, 'username')
@@ -18,6 +21,12 @@ class AngularPage(BasePage):
     LOGIN_MESSAGE_SUCCESS = (By.XPATH, "//p[normalize-space()=\"You're logged in!!\"]")
     LOGOUT_LINK = (By.CSS_SELECTOR, 'a[href="#/login"]')
     DANGER_ALERT = (By.CLASS_NAME, 'alert-danger ')
+
+    @allure.step('Открыть стартовую страницу')
+    def open_page(self):
+        url = self.get_full_url()
+        self.browser.get(url)
+        return self
 
     @allure.step('Нажать кнопку "Login"')
     def click_login_button(self):

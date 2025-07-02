@@ -1,5 +1,7 @@
 allure-pytest==2.14.3
+Faker==37.4.0
+pre_commit==4.2.0
 pytest==8.4.1
 pytest-xdist==3.7.0
+python-dotenv==1.1.1
 selenium==4.33.0
-Faker==37.4.0

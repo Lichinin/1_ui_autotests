@@ -410,3 +410,5 @@ FodyWeavers.xsd
 venv/
 allure-report/
 allure-results/
+.env
+data
