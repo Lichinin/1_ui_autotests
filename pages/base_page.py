@@ -125,3 +125,16 @@ class BasePage:
     def verify_list_items(self, actual_list, expected_list, msg_prefix=""):
         for i, (actual, expected) in enumerate(zip(actual_list, expected_list)):
             assert actual == expected, f'{msg_prefix} [{i}] не совпадает: {actual} != {expected}'
+
+    @allure.step('Убрать фокус с элемента')
+    def clear_focus_from_element(self):
+        self.browser.execute_script('document.activeElement.blur();')
+
+    @allure.step('Получить активный элемент')
+    def get_active_element(self):
+        return self.browser.switch_to.active_element
+
+    @allure.step('Проверить наличие скролла на странице')
+    def check_page_has_scroll(self):
+        assert self.browser.execute_script('return document.body.scrollHeight > window.innerHeight;'), \
+            'Скролл на странице не обнаружен'
