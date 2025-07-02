@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from helpers.data_helpers import DataHelper
-from pages.angular_login_page import AngularPage
+from pages.page_factory import PageFactory
 
 
 @allure.epic('Web UI Tests')
@@ -34,18 +34,25 @@ class TestParametrizedLogin:
         'username, password, description',
         positive_cases,
         )
-    def test_valid_autorization(self, angular_page: AngularPage, username, password, description):
+    def test_valid_autorization(self, pages: PageFactory, username, password, description):
         with allure.step(
             f'Тестовые данные:Логин = {username}, Пароль = {password}, Описание = {description}'
         ):
+            with allure.step('Открыть стартовую страницу'):
+                angular_page = pages.angular_page.open_page()
+
             with allure.step('Заполнить поле "Username" валидным значением'):
                 angular_page.fill_username_field(username)
+
             with allure.step('Заполнить поле "Password" валидным значением'):
                 angular_page.fill_password_field(password)
+
             with allure.step('Заполнить поле "Description" валидным значением'):
                 angular_page.fill_description_field(description)
+
             with allure.step('Нажать на кнопку "Login"'):
                 angular_page.click_login_button()
+
             with allure.step('Проверить текст успешного входа'):
                 angular_page.check_login_success_text()
 
@@ -56,17 +63,24 @@ class TestParametrizedLogin:
         'username, password, description',
         neganive_cases,
         )
-    def test_invalid_autorization(self, angular_page: AngularPage, username, password, description):
+    def test_invalid_autorization(self, pages: PageFactory, username, password, description):
         with allure.step(
             f'Тестовые данные:Логин = {username}, Пароль = {password}, Описание = {description}'
         ):
+            with allure.step('Открыть стартовую страницу'):
+                angular_page = pages.angular_page.open_page()
+
             with allure.step('Заполнить поле "Username" невалидным значением'):
                 angular_page.fill_username_field(username)
+
             with allure.step('Заполнить поле "Password" невалидным значением'):
                 angular_page.fill_password_field(password)
+
             with allure.step('Заполнить поле "Description" невалидным значением'):
                 angular_page.fill_description_field(description)
+
             with allure.step('Нажать на кнопку "Login"'):
                 angular_page.click_login_button()
+
             with allure.step('Проверить текст ошибки'):
                 angular_page.check_login_unsuccess_text()

@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from helpers.data_helpers import DataHelper
-from pages.angular_login_page import AngularPage
+from pages.page_factory import PageFactory
 
 
 @allure.epic('Web UI Tests')
@@ -34,21 +34,27 @@ class TestParametrizedLogin:
         'username, password, description',
         positive_cases,
         )
-    def test_valid_autorization_text(self, angular_page: AngularPage, username, password, description):
+    def test_valid_autorization_text(self, pages: PageFactory, username, password, description):
         with allure.step(
             f'Тестовые данные:Логин = {username}, Пароль = {password}, Описание = {description}'
         ):
+            with allure.step('Открыть стартовую страницу'):
+                angular_page = pages.angular_page.open_page()
+
             with allure.step('Заполнить поле "Username" валидным значением'):
                 angular_page.fill_username_field(username)
+
             with allure.step('Заполнить поле "Password" валидным значением'):
                 angular_page.fill_password_field(password)
+
             with allure.step('Заполнить поле "Description" валидным значением'):
                 angular_page.fill_description_field(description)
+
             with allure.step('Нажать на кнопку "Login"'):
                 angular_page.click_login_button()
+
             with allure.step('Проверить текст успешного входа'):
                 angular_page.check_login_text_and_get_screenshot()()
-
 
     @allure.story('Authorization')
     @allure.severity(allure.severity_level.CRITICAL)
@@ -57,28 +63,40 @@ class TestParametrizedLogin:
         'username, password, description',
         neganive_cases,
         )
-    def test_invalid_autorization(self, angular_page: AngularPage, username, password, description):
+    def test_invalid_autorization(self, pages: PageFactory, username, password, description):
         with allure.step(
             f'Тестовые данные:Логин = {username}, Пароль = {password}, Описание = {description}'
         ):
+            with allure.step('Открыть стартовую страницу'):
+                angular_page = pages.angular_page.open_page()
+
             with allure.step('Заполнить поле "Username" валидным значением'):
                 angular_page.fill_username_field(username)
+
             with allure.step('Заполнить поле "Password" валидным значением'):
                 angular_page.fill_password_field(password)
+
             with allure.step('Заполнить поле "Description" валидным значением'):
                 angular_page.fill_description_field(description)
+
             with allure.step('Нажать на кнопку "Login"'):
                 angular_page.click_login_button()
+
             with allure.step('Проверить текст успешного входа'):
                 angular_page.check_login_success_text()
 
     @allure.story('Form Elements')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка видимости поля "Username" (fail_screenshot)')
-    def test_username_is_visible(self, angular_page: AngularPage):
+    def test_username_is_visible(self, pages: PageFactory):
+        with allure.step('Открыть стартовую страницу'):
+            angular_page = pages.angular_page.open_page()
+
         with allure.step('Проверить что поле "Username" отображается'):
             angular_page.check_username_field_visible()
+
         with allure.step('Проверить что есть атрибут "text"'):
             angular_page.check_username_text_attr()
+
         with allure.step('Проверить "label" поля "Username"'):
             angular_page.check_username_label_invalid()

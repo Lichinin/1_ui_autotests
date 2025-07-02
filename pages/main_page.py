@@ -11,6 +11,9 @@ from pages.base_page import BasePage
 
 class MainPage(BasePage):
 
+    def __init__(self, browser):
+        super().__init__(browser)
+
     ENDPOINT_URL = ''
 
     HEADER = (By.ID, 'ast-desktop-header')
@@ -58,6 +61,12 @@ class MainPage(BasePage):
     COURSE_LOGO_ICON = (By.CSS_SELECTOR, '.elementor-icon i')
     COURSE_BUTTON = (By.CSS_SELECTOR, '.elementor-button-text')
     COURSE_BUTTON_LINK = (By.CSS_SELECTOR, '.elementor-button-link')
+
+    @allure.step('Открыть страницу')
+    def open_page(self):
+        url = self.get_full_url()
+        self.browser.get(url)
+        return self
 
     @allure.step('Получить индекс активного слайда')
     def get_active_slide_index(self):
