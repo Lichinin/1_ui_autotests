@@ -82,10 +82,14 @@ class TestAngularLoginPage:
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Выход из аккаунта (logout)')
     def test_logout(self, angular_page: AngularPage):
+        login = Constants.ANGULAR_VALID_LOGIN
+        password = Constants.ANGULAR_VALID_PASS
+        description = Constants.ANGULAR_VALID_DESC
+
         with allure.step('Вход с валидными данными'):
-            angular_page.fill_username_field_valid()
-            angular_page.fill_password_field_valid()
-            angular_page.fill_description_field_valid()
+            angular_page.fill_username_field(login)
+            angular_page.fill_password_field(password)
+            angular_page.fill_description_field(description)
             angular_page.click_login_button()
         with allure.step('Нажать на ссылку "Logout"'):
             angular_page.click_logout_button()

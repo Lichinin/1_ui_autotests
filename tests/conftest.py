@@ -3,6 +3,7 @@ import logging
 import logging.handlers
 import os
 from logging.handlers import RotatingFileHandler
+from typing import Generator
 
 import allure
 import pytest
@@ -16,6 +17,7 @@ from config import Pathes, Urls
 from helpers.cookies_helper import CookiesHelper
 from pages.angular_login_page import AngularPage
 from pages.main_page import MainPage
+from pages.page_factory import PageFactory
 from pages.sql_ex_page import SqlExPage
 
 
@@ -53,7 +55,7 @@ def logger(request):
 
 
 @pytest.fixture(scope="function")
-def browser(request, logger) -> WebDriver:
+def browser(request, logger) -> Generator[WebDriver, None, None]:
     browser_name = request.config.getoption('--browser')
     browser_version = request.config.getoption('--browser_version')
     url = request.config.getoption('--url')
@@ -101,10 +103,6 @@ def angular_page(browser) -> AngularPage:
     browser.get(AngularPage.get_full_url())
     return AngularPage(browser)
 
-@pytest.fixture(scope='function')
-def sql_ex_page(browser) -> SqlExPage:
-    browser.get(Urls.SQL_EX_RU)
-    return SqlExPage(browser)
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -120,24 +118,19 @@ def pytest_runtest_makereport(item, call):
                 attachment_type=allure.attachment_type.PNG
             )
 
+
 @pytest.fixture(scope='function')
-def prepare_cookies(logger):
-    options = ChromeOptions()
-    options.add_argument("--start-maximized")
-    options.add_argument('--headless')
-
-    driver = webdriver.Chrome(options=options)
-    driver.logger = logger
-    driver.get(Urls.SQL_EX_RU)
-    page = SqlExPage(driver)
-
-    page.fill_login_field()
-    page.fill_passsword_field()
-    page.click_login_button()
-
-    CookiesHelper.save_cookies_to_file(driver)
-    driver.quit()
+def prepare_cookies(pages: PageFactory):
+    sql_ex_page = pages.sqlex.open_page()
+    cookies_helper = CookiesHelper(sql_ex_page)
+    sql_ex_page = pages.sqlex.click_login_as_guest_button()
+    cookies_helper.save_cookies_to_file()
 
     yield
 
     CookiesHelper.delete_cookies_file()
+
+
+@pytest.fixture(scope='function')
+def pages(browser) -> PageFactory:
+    return PageFactory(browser)
