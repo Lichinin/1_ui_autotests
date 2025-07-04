@@ -53,3 +53,12 @@ class SqlExPage(BasePage):
     @allure.step('Записать cookie в браузер')
     def add_cookies_and_refresh(self):
         CookiesHelper.add_cookies_to_browser_and_refresh(self.browser)
+
+    @allure.step('Кликнуть по полю "Password"')
+    def click_password_field(self):
+        self.click_button(self.PASSWORD_FIELD)
+
+    @allure.step('Сравнить текущий активный элемент, и активный элемент до очистки фокуса')
+    def check_clean_focus_from_element(self, element):
+        new_active_element = self.get_active_element()
+        assert element != new_active_element, f'{element} не должен быть равен {new_active_element}'
