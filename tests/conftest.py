@@ -2,7 +2,7 @@ import datetime
 import logging
 from logging.handlers import RotatingFileHandler
 from typing import Generator
-
+from selenium import webdriver as remote_webdriver
 import allure
 import pytest
 from selenium import webdriver
@@ -21,6 +21,7 @@ def pytest_addoption(parser):
     parser.addoption('--url', action='store', default=Urls.BASE_URL)
     parser.addoption('--log_level', action='store', default="INFO")
     parser.addoption('--browser_version', action='store')
+    parser.addoption('--executor', action='store', default=None)
 
 
 @pytest.fixture(scope='function')
@@ -54,29 +55,38 @@ def browser(request, logger) -> Generator[WebDriver, None, None]:
     browser_name = request.config.getoption('--browser')
     browser_version = request.config.getoption('--browser_version')
     url = request.config.getoption('--url')
+    executor = request.config.getoption('--executor')
 
-    if browser_name == 'chrome':
-        options = ChromeOptions()
-        # options.add_argument('--headless')
-        options.add_argument("--incognito")
-        options.add_argument('--ignore-certificate-errors')
-        options.add_argument("--start-maximized")
-        options.page_load_strategy = 'eager'
-        driver = webdriver.Chrome(options=options)
-    elif browser_name == 'firefox':
-        options = FirefoxOptions()
-        options.add_argument('--ignore-certificate-errors')
-        # options.add_argument('--headless')
-        options.page_load_strategy = 'eager'
-        driver = webdriver.Firefox(options=options)
-    elif browser_name == 'edge':
-        options = EdgeOptions()
-        options.page_load_strategy = 'eager'
-        driver = webdriver.Edge(options=options)
-    else:
-        raise ValueError(
-            'Browser name must be "chrome", "firefox" or "edge"'
+    options_map = {
+        'chrome': ChromeOptions(),
+        'firefox': FirefoxOptions(),
+        'edge': EdgeOptions()
+    }
+
+    options = options_map.get(browser_name.lower())
+
+    if options is None:
+        raise ValueError('Browser name must be "chrome", "firefox" or "edge"')
+
+    options.add_argument('--ignore-certificate-errors')
+    # options.add_argument('--headless')
+    options.add_argument("--start-maximized")
+    options.add_argument("--incognito")
+    options.page_load_strategy = 'eager'
+
+    if executor:
+        driver = remote_webdriver.Remote(
+            command_executor=executor,
+            options=options
         )
+    else:
+        if browser_name == 'chrome':
+            driver = webdriver.Chrome(options=options)
+        elif browser_name == 'firefox':
+            driver = webdriver.Firefox(options=options)
+        elif browser_name == 'edge':
+            driver = webdriver.Edge(options=options)
+
     driver.url = url
     driver.logger = logger
     driver.test_name = request.node.name
