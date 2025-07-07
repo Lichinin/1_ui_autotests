@@ -1,11 +1,11 @@
-from selenium.webdriver.remote.webdriver import WebDriver
+from selenium import webdriver
+from selenium import webdriver as remote_webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.ie.options import Options as IeOptions
 from selenium.webdriver.ie.service import Service as IeService
-from selenium import webdriver as remote_webdriver
-from selenium import webdriver
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class DriverFactory:

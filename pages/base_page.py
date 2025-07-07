@@ -1,5 +1,6 @@
 import allure
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -138,3 +139,8 @@ class BasePage:
     def check_page_has_scroll(self):
         assert self.browser.execute_script('return document.body.scrollHeight > window.innerHeight;'), \
             'Скролл на странице не обнаружен'
+
+    @allure.step('Drag-n-drop элемента "{draggable}" на элемент "{droppable}"')
+    def drag_n_drop(self, draggable, droppable):
+        actions = ActionChains(self.browser)
+        actions.drag_and_drop(draggable, droppable).perform()
