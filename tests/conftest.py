@@ -2,16 +2,12 @@ import datetime
 import logging
 from logging.handlers import RotatingFileHandler
 from typing import Generator
-from selenium import webdriver as remote_webdriver
 import allure
 import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from config import Pathes, Urls
+from drivers.driver_factory import DriverFactory
 from helpers.cookies_helper import CookiesHelper
 from pages.page_factory import PageFactory
 
@@ -57,35 +53,10 @@ def browser(request, logger) -> Generator[WebDriver, None, None]:
     url = request.config.getoption('--url')
     executor = request.config.getoption('--executor')
 
-    options_map = {
-        'chrome': ChromeOptions(),
-        'firefox': FirefoxOptions(),
-        'edge': EdgeOptions()
-    }
-
-    options = options_map.get(browser_name.lower())
-
-    if options is None:
-        raise ValueError('Browser name must be "chrome", "firefox" or "edge"')
-
-    options.add_argument('--ignore-certificate-errors')
-    # options.add_argument('--headless')
-    options.add_argument("--start-maximized")
-    options.add_argument("--incognito")
-    options.page_load_strategy = 'eager'
-
-    if executor:
-        driver = remote_webdriver.Remote(
-            command_executor=executor,
-            options=options
-        )
-    else:
-        if browser_name == 'chrome':
-            driver = webdriver.Chrome(options=options)
-        elif browser_name == 'firefox':
-            driver = webdriver.Firefox(options=options)
-        elif browser_name == 'edge':
-            driver = webdriver.Edge(options=options)
+    driver = DriverFactory.create_driver(
+        browser_name=browser_name,
+        executor=executor
+    )
 
     driver.url = url
     driver.logger = logger
