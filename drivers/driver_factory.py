@@ -19,25 +19,19 @@ class DriverFactory:
         options_map = {
             'chrome': ChromeOptions(),
             'firefox': FirefoxOptions(),
-            'edge': EdgeOptions(),
-            'ie': IeOptions()
+            'edge': EdgeOptions()
         }
 
         options = options_map.get(browser_name.lower())
 
         if options is None:
-            raise ValueError('Browser name must be "chrome", "firefox", "edge" or "ie"')
+            raise ValueError('Browser name must be "chrome", "firefox", "edge"')
 
         options.add_argument('--ignore-certificate-errors')
         # options.add_argument('--headless')
         options.add_argument("--start-maximized")
         options.add_argument("--incognito")
         options.page_load_strategy = 'eager'
-
-        if browser_name == 'ie':
-            options.ignore_protected_mode_settings = True
-            options.ignore_zoom_level = True
-            options.require_window_focus = True
 
         if executor:
             return remote_webdriver.Remote(
@@ -55,6 +49,3 @@ class DriverFactory:
             return webdriver.Firefox(options=options)
         elif browser_name == 'edge':
             return webdriver.Edge(options=options)
-        elif browser_name == 'ie':
-            ie_service = IeService(executable_path=r'E:\Dev\1_ui_autotests\drivers\IEDriverServer.exe')
-            return webdriver.Ie(service=ie_service, options=options)
