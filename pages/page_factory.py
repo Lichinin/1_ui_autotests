@@ -1,3 +1,4 @@
+from pages.alert_page import AlertPage
 from pages.angular_login_page import AngularPage
 from pages.dropppable_page import DroppablePage
 from pages.frames_and_windows_page import FramesAndWindowsPage
@@ -39,3 +40,9 @@ class PageFactory:
         if 'frame_and_windows_page' not in self._cache:
             self._cache['frame_and_windows_page'] = FramesAndWindowsPage(self.driver)
         return self._cache['frame_and_windows_page']
+
+    @property
+    def alert_page(self) -> AlertPage:
+        if 'alert_page' not in self._cache:
+            self._cache['alert_page'] = AlertPage(self.driver)
+        return self._cache['alert_page']
