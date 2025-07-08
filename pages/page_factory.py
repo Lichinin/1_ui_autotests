@@ -1,5 +1,6 @@
 from pages.angular_login_page import AngularPage
 from pages.dropppable_page import DroppablePage
+from pages.frames_and_windows_page import FramesAndWindowsPage
 from pages.main_page import MainPage
 from pages.sql_ex_page import SqlExPage
 
@@ -32,3 +33,9 @@ class PageFactory:
         if 'droppable_page' not in self._cache:
             self._cache['droppable_page'] = DroppablePage(self.driver)
         return self._cache['droppable_page']
+
+    @property
+    def frame_and_windows_page(self) -> FramesAndWindowsPage:
+        if 'frame_and_windows_page' not in self._cache:
+            self._cache['frame_and_windows_page'] = FramesAndWindowsPage(self.driver)
+        return self._cache['frame_and_windows_page']

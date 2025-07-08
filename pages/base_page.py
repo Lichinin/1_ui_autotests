@@ -144,3 +144,8 @@ class BasePage:
     def drag_n_drop(self, draggable, droppable):
         actions = ActionChains(self.browser)
         actions.drag_and_drop(draggable, droppable).perform()
+
+    @allure.step('Переключиться на вкладку номер {tab_number}')
+    def switch_to_tab(self, tab_number):
+        tabs = self.browser.window_handles
+        self.browser.switch_to.window(tabs[tab_number-1])
