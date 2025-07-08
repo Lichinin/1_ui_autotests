@@ -1,4 +1,5 @@
 from pages.angular_login_page import AngularPage
+from pages.dropppable_page import DroppablePage
 from pages.main_page import MainPage
 from pages.sql_ex_page import SqlExPage
 
@@ -25,3 +26,9 @@ class PageFactory:
         if 'main_page' not in self._cache:
             self._cache['main_page'] = MainPage(self.driver)
         return self._cache['main_page']
+
+    @property
+    def droppable_page(self) -> DroppablePage:
+        if 'droppable_page' not in self._cache:
+            self._cache['droppable_page'] = DroppablePage(self.driver)
+        return self._cache['droppable_page']
