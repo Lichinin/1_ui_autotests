@@ -27,4 +27,5 @@ class TestMainPage:
         with allure.step('Повторно нажать кнопку "DISPLAY IMAGE"'):
             basic_auth.click_display_image_button()
 
-        basic_auth.check_image_is_visible()
+        with allure.step('Проверить, что изображение отображается на странице'):
+            basic_auth.check_image_is_visible()

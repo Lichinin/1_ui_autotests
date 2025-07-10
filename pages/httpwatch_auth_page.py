@@ -39,5 +39,6 @@ class HttpWatchAuthPage(BasePage):
         })
         self.browser.refresh()
 
+    @allure.step('Проверить отображение изображения на странице')
     def check_image_is_visible(self):
         assert self.is_element_visible(self.IMAGE), 'Изображение не отображается'
