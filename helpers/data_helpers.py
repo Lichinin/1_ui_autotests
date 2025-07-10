@@ -30,3 +30,9 @@ class DataHelper:
             'description': description,
             'password': password
         }
+
+    @staticmethod
+    @allure.step('Сгенерировать username')
+    def random_username():
+        username = fake.name()
+        return username
