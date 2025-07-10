@@ -1,5 +1,6 @@
 import allure
 
+from helpers.data_helpers import DataHelper
 from pages.page_factory import PageFactory
 
 
@@ -10,7 +11,10 @@ class TestMainPage:
     @allure.story('Alert')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка ввода текста в alert')
-    def test_drag_n_drop(self, pages: PageFactory):
+    def test_input_text_to_alert(self, pages: PageFactory):
+
+        username = DataHelper.random_username()
+
         with allure.step('Открыть стартовую страницу'):
             alert_page = pages.alert_page.open_page()
 
@@ -24,7 +28,7 @@ class TestMainPage:
             alert_page.click_button_to_demonstrate()
 
         with allure.step('Ввести текст в alert'):
-            alert_page.intut_text_to_alert()
+            alert_page.intut_text_to_alert(username)
 
         with allure.step('Проверить результат ввода в alert'):
-            alert_page.check_intut_alert_text()
+            alert_page.check_intut_alert_text(username)
