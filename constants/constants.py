@@ -25,9 +25,6 @@ class Constants:
     REGISTER_BUTTON_TEXT = 'Register Now'
     REGISTER_BUTTON_COLOUR = 'rgba(230, 51, 44, 1)'
 
-    BASIC_AUTH_LOGIN = 'httpwatch'
-    BASIC_AUTH_PASSWORD = 'password'
-
     BEST_COURSES_DATA_LIST = [
         {
             'title': 'Lifetime Membership',

@@ -1,7 +1,12 @@
+import os
+
 import allure
+from dotenv import load_dotenv
 from faker import Faker
 
 from pages.main_page import MainPage
+
+load_dotenv()
 
 fake = Faker(['en_US'])
 
@@ -36,3 +41,8 @@ class DataHelper:
     def random_username():
         username = fake.name()
         return username
+
+    @staticmethod
+    @allure.step('Получить данные из .ENV')
+    def get_from_env(value):
+        return os.getenv(value)

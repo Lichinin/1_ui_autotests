@@ -1,6 +1,6 @@
 import allure
 
-from constants.constants import Constants
+from helpers.data_helpers import DataHelper
 from pages.page_factory import PageFactory
 
 
@@ -12,8 +12,8 @@ class TestMainPage:
     @allure.severity(allure.severity_level.NORMAL)
     @allure.title('Проверка авторизации (Basic Auth)')
     def test_basic_auth(self, pages: PageFactory):
-        username = Constants.BASIC_AUTH_LOGIN
-        password = Constants.BASIC_AUTH_PASSWORD
+        username = DataHelper.get_from_env('BASIC_AUTH_LOGIN')
+        password = DataHelper.get_from_env('BASIC_AUTH_PASSWORD')
 
         with allure.step('Открыть стартовую страницу'):
             basic_auth = pages.basic_auth.open_page()

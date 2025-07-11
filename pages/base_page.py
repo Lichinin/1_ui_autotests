@@ -1,3 +1,5 @@
+import base64
+
 import allure
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -160,3 +162,14 @@ class BasePage:
         alert = self.browser.switch_to.alert
         alert.send_keys(text)
         alert.accept()
+
+    @allure.step('Ввести значения логина и пароля, обновить страницу')
+    def fill_credentials_and_refresh(self, username, password):
+        credentials = f'{username}:{password}'
+        encoded_credentials = base64.b64encode(credentials.encode()).decode('ascii')
+
+        self.browser.execute_cdp_cmd('Network.enable', {})
+        self.browser.execute_cdp_cmd('Network.setExtraHTTPHeaders', {
+            'headers': {'Authorization': f'Basic {encoded_credentials}'}
+        })
+        self.browser.refresh()
