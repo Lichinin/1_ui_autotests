@@ -9,6 +9,7 @@ class Urls:
     BASE_URL = 'https://www.way2automation.com'
     SQL_EX_RU = 'https://sql-ex.ru/'
     AUTH_URS = 'https://authenticationtest.com/simpleFormAuth/'
+    HTTPWATCH = 'https://www.httpwatch.com'
 
 
 class Pathes:
