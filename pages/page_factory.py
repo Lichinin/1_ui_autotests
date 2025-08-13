@@ -1,5 +1,6 @@
 from pages.alert_page import AlertPage
 from pages.angular_login_page import AngularPage
+from pages.banking_page import BankingPage
 from pages.dropppable_page import DroppablePage
 from pages.frames_and_windows_page import FramesAndWindowsPage
 from pages.httpwatch_auth_page import HttpWatchAuthPage
@@ -53,3 +54,9 @@ class PageFactory:
         if 'basic_auth' not in self._cache:
             self._cache['basic_auth'] = HttpWatchAuthPage(self.driver)
         return self._cache['basic_auth']
+
+    @property
+    def banking_page(self) -> BankingPage:
+        if 'banking_page' not in self._cache:
+            self._cache['banking_page'] = BankingPage(self.driver)
+        return self._cache['banking_page']
