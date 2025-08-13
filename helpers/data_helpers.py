@@ -46,3 +46,23 @@ class DataHelper:
     @allure.step('Получить данные из .ENV')
     def get_from_env(value):
         return os.getenv(value)
+
+    @staticmethod
+    @allure.step('Сгенерировать данные для авторизации BankingPage')
+    def random_login_banking_page_data():
+        first_name = fake.first_name()
+        last_name = fake.last_name()
+        email = fake.email()
+        password = fake.password(length=8)
+        return {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'password': password
+        }
+
+    @staticmethod
+    @allure.step('Получить самое длинное значение хобби')
+    def get_longest_hobbie(list):
+        list_values = [hobby.get_attribute('value') for hobby in list]
+        return max(list_values)
