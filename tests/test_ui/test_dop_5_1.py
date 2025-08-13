@@ -46,7 +46,7 @@ class TestBankingPage:
             banking_page.fill_about_yourself()
 
         with allure.step('10. Кликнуть кнопку "Register"'):
-            banking_page.click_register_button()
+            banking_page.click_confirm_button()
 
         with allure.step('11. Проверить появление сообщения о успешной регистрации'):
             banking_page.check_success_register_message()

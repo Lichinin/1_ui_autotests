@@ -54,11 +54,13 @@ class DataHelper:
         last_name = fake.last_name()
         email = fake.email()
         password = fake.password(length=8)
+        postcode = fake.postcode()
         return {
             'first_name': first_name,
             'last_name': last_name,
             'email': email,
-            'password': password
+            'password': password,
+            'postcode': postcode
         }
 
     @staticmethod
