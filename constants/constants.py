@@ -24,6 +24,8 @@ class Constants:
     ANGULAR_UNSUCCESS_LOGIN_TEXT = "Username or password is incorrect"
     REGISTER_BUTTON_TEXT = 'Register Now'
     REGISTER_BUTTON_COLOUR = 'rgba(230, 51, 44, 1)'
+    CUSTOMER_REGISTRATION_TEXT = 'Customer added successfully with customer id :'
+    CUSTOMER_PROCESS_TEXT = 'Account created successfully with account Number :'
 
     BEST_COURSES_DATA_LIST = [
         {

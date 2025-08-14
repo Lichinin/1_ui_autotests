@@ -173,3 +173,11 @@ class BasePage:
             'headers': {'Authorization': f'Basic {encoded_credentials}'}
         })
         self.browser.refresh()
+
+    @allure.step('Проверить текст alert')
+    def check_alert_text(self, expected_text):
+        alert = self.browser.switch_to.alert
+        alert_text = alert.text
+        alert.accept()
+        assert alert_text.startswith(expected_text), \
+            f'Текст элемента не совпадает. Ожидалось: "{expected_text}", получено: "{alert_text}"'
