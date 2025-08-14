@@ -1,4 +1,5 @@
 import random
+
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
@@ -28,12 +29,14 @@ class BankingPage(BasePage):
     CONFIRM_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     SUCCESS_REGISTER_MESSAGE = (By.ID, 'successMessage')
     ADD_CUSTOMER_TAB = (By.CSS_SELECTOR, 'button[ng-click="addCust()"]')
+    CUSTOMERS_TAB = (By.CSS_SELECTOR, 'button[ng-click="showCust()"]')
     OPEN_ACCOUNT_TAB = (By.CSS_SELECTOR, 'button[ng-click="openAccount()"]')
     CUSTOMER_FIRST_NAME_FIELD = (By.CSS_SELECTOR, 'input[ng-model="fName"]')
     CUSTOMER_LAST_NAME_FIELD = (By.CSS_SELECTOR, 'input[ng-model="lName"]')
     CUSTOMER_POSTCODE_FIELD = (By.CSS_SELECTOR, 'input[ng-model="postCd"]')
     CUSTOMER_DROPDOWN = (By.ID, 'userSelect')
     CURRENCY_DROPDOWN = (By.ID, 'currency')
+    CUSTOMER_ROW_DELETE_BUTTON = (By.XPATH, './/button[contains(text(), "Delete")]')
 
     @allure.step('Открыть стартовую страницу')
     def open_page(self):
@@ -133,3 +136,16 @@ class BankingPage(BasePage):
     def check_process_alert_text(self):
         expected_text = Constants.CUSTOMER_PROCESS_TEXT
         self.check_alert_text(expected_text)
+
+    @allure.step('Нажать на вкладку "Customers"')
+    def click_customers_tab(self):
+        self.click_button(self.CUSTOMERS_TAB)
+
+    @allure.step('Нажать на кнопку "Delete" У пользователя "{first_name} {last_name}"')
+    def delete_customer(self, first_name, last_name):
+        customer_row = self.browser.find_element(
+            By.XPATH,
+            f'//tr[contains(td[1], "{first_name}") and contains(td[2], "{last_name}")]'
+        )
+        button = customer_row.find_element(*self.CUSTOMER_ROW_DELETE_BUTTON)
+        button.click()
