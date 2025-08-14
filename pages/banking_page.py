@@ -37,6 +37,21 @@ class BankingPage(BasePage):
     CUSTOMER_DROPDOWN = (By.ID, 'userSelect')
     CURRENCY_DROPDOWN = (By.ID, 'currency')
     CUSTOMER_ROW_DELETE_BUTTON = (By.XPATH, './/button[contains(text(), "Delete")]')
+    CUSTOMER_LOGIN_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="customer()"]')
+    WELCOME_TEXT = (By.XPATH, '//strong[contains(., "Welcome")]')
+    TRANSACTIONS_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="transactions()"]')
+    DEPOSIT_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="deposit()"]')
+    WITHDRAWL_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="withdrawl()"]')
+    AMOUNT_FIELD = (By.CSS_SELECTOR, 'input[ng-model="amount"]')
+    DEPOSIT_MESSAGE = (By.CSS_SELECTOR, 'span.error')
+    TRANSACTIONS_AMOUNT = (By.CSS_SELECTOR, 'tbody tr td:nth-of-type(2)')
+    TABLE = (By.CSS_SELECTOR, 'table.table')
+    ACCOUNT_INFO = (By.CSS_SELECTOR, 'div[ng-hide="noAccount"]')
+    DEBIT_COLUMN = (By.XPATH, './/tr[td[3][contains(text(), "Debit")]]/td[2]')
+    CREDIT_COLUMN = (By.XPATH, './/tr[td[3][contains(text(), "Credit")]]/td[2]')
+    ANY_COLUMN = (By.XPATH, './/tbody//tr/td[2]')
+    RESET_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="reset()"]')
+    BACK_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="back()"]')
 
     @allure.step('Открыть стартовую страницу')
     def open_page(self):
@@ -143,9 +158,154 @@ class BankingPage(BasePage):
 
     @allure.step('Нажать на кнопку "Delete" У пользователя "{first_name} {last_name}"')
     def delete_customer(self, first_name, last_name):
-        customer_row = self.browser.find_element(
+        customer_table = self.get_element(self.TABLE)
+        customer_row = customer_table.find_element(
             By.XPATH,
             f'//tr[contains(td[1], "{first_name}") and contains(td[2], "{last_name}")]'
         )
         button = customer_row.find_element(*self.CUSTOMER_ROW_DELETE_BUTTON)
         button.click()
+
+    @allure.step('Нажать кнопку "Customer Login"')
+    def click_customer_login_button(self):
+        self.click_button(self.CUSTOMER_LOGIN_BUTTON)
+
+    @allure.step('Проверить, что сообщение приветствия соответствует выбранному пользователю')
+    def check_welcome_text(self, username):
+        expected_text = f'Welcome {username} !!'
+        self.check_element_text(self.WELCOME_TEXT, expected_text)
+
+    @allure.step('Нажать кнопку "Transactions"')
+    def click_transactions_button(self):
+        self.browser.refresh()
+        self.click_button(self.TRANSACTIONS_BUTTON)
+
+    @allure.step('Нажать кнопку "Deposit"')
+    def click_deposit_button(self):
+        self.click_button(self.DEPOSIT_BUTTON)
+
+    @allure.step('Нажать кнопку "Withdrawl"')
+    def click_withdrawl_button(self):
+        self.browser.refresh()
+        self.click_button(self.WITHDRAWL_BUTTON)
+
+    @allure.step('Заполнить поле "amount" значением "{value}"')
+    def fill_amount_field(self, value):
+        self.fill_field(self.AMOUNT_FIELD, value)
+
+    @allure.step('Проверить что вернулось сообщение "Deposit Successful"')
+    def check_deposit_success_message(self):
+        expected_message = 'Deposit Successful'
+        self.check_element_text(self.DEPOSIT_MESSAGE, expected_message)
+
+    @allure.step('Проверить что сообщение "Deposit Successful" нет')
+    def check_no_deposit_success_message(self):
+        assert not self.is_element_visible(self.DEPOSIT_MESSAGE), \
+            'Сообщение о успешном пополнении депопиза отображается'
+
+    @allure.step('Проверить что транзакция со значением"{amount}" присутствует в списке')
+    def check_transaction_present(self, amount):
+        transaction_table = self.get_element(self.TABLE)
+        transactions_credit_raw = transaction_table.find_elements(*self.CREDIT_COLUMN)
+        transactions_credit = [amount.text for amount in transactions_credit_raw]
+        assert amount in transactions_credit, \
+            f'Транзакция на сумму {amount}, отсутствует в списке транзакций: {transactions_credit}'
+
+    @allure.step('Проверить что транзакция со значением"{amount}" отсутствует в списке')
+    def check_transaction_absent(self, amount):
+        transaction_table = self.get_element(self.TABLE)
+        transactions_credit_raw = transaction_table.find_elements(*self.CREDIT_COLUMN)
+        transactions_credit = [amount.text for amount in transactions_credit_raw]
+        assert amount not in transactions_credit, \
+            f'Транзакция на сумму {amount}, присутствует в списке транзакций: {transactions_credit}'
+
+    @allure.step('Получить значение баланса Customer')
+    def get_balance(self):
+        account_info = self.get_element_text(self.ACCOUNT_INFO)
+        account_balance = account_info.split()[7]
+        return account_balance
+
+    @allure.step('Заполнить значение withdrawl рандобной суммой, не больше баланса')
+    def fill_withdrawl_field(self, value):
+        self.fill_field(self.AMOUNT_FIELD, value)
+
+    @allure.step('Проверить что вернулось сообщение "Transaction successful"')
+    def check_withdrawl_success_message(self):
+        expected_message = 'Transaction successful'
+
+        self.check_element_text(self.DEPOSIT_MESSAGE, expected_message)
+
+    @allure.step('Проверить что транзакция со значением"{withdrawl}" присутствует в списке')
+    def check_withdrawl_transaction_present(self, withdrawl):
+        transaction_table = self.get_element(self.TABLE)
+        transactions_debit_raw = transaction_table.find_elements(*self.DEBIT_COLUMN)
+        transactions_debit = [amount.text for amount in transactions_debit_raw]
+        assert withdrawl in transactions_debit, \
+            f'Транзакция на сумму {withdrawl}, отсутствует в списке транзакций: {transactions_debit}'
+
+    @allure.step('Проверить что транзакция со значением"{withdrawl}" отсутствует в списке')
+    def check_withdrawl_transaction_absent(self, withdrawl):
+        transaction_table = self.get_element(self.TABLE)
+        transactions_debit_raw = transaction_table.find_elements(*self.DEBIT_COLUMN)
+        transactions_debit = [amount.text for amount in transactions_debit_raw]
+        assert withdrawl not in transactions_debit, \
+            f'Транзакция на сумму {withdrawl}, отсутствует в списке транзакций: {transactions_debit}'
+
+    @allure.step('Проверить что вернулось сообщение о ошибке снятия средств')
+    def check_withdrawl_failed_message(self):
+        expected_message = 'Transaction Failed. You can not withdraw amount more than the balance.'
+        self.check_element_text(self.DEPOSIT_MESSAGE, expected_message)
+
+    @allure.step('Получить все операции из транзакций и рассчитать баланс')
+    def calculate_balance(self):
+        transaction_table = self.get_element(self.TABLE)
+
+        transactions_debit_raw = transaction_table.find_elements(*self.DEBIT_COLUMN)
+        transactions_debit = [int(amount.text) for amount in transactions_debit_raw]
+
+        transactions_credit_raw = transaction_table.find_elements(*self.CREDIT_COLUMN)
+        transactions_credit = [int(amount.text) for amount in transactions_credit_raw]
+
+        calculated_balance = sum(transactions_credit) - sum(transactions_debit)
+        return calculated_balance
+
+    @allure.step('Сравнить отображаемое значение баланса с рассчетным')
+    def check_balance(self, displayed_balance, calculated_balance):
+        assert int(displayed_balance) == int(calculated_balance), \
+            f'Отображаемый баланс ({displayed_balance}) не соответствует рассчитанному ({calculated_balance})'
+
+    @allure.step('Проверить, чо значение баланса равно нулю')
+    def check_balance_null(self, balance):
+        assert balance == '0', \
+            f'Ожидалось значение баланса равное "0", получено "{balance}"'
+
+    @allure.step('Подсчитать количество транзакций')
+    def count_transactions(self):
+        transaction_table = self.get_element(self.TABLE)
+        transactions_raw = transaction_table.find_elements(*self.ANY_COLUMN)
+        return len(transactions_raw)
+
+    @allure.step('Проверить, что количество транзакций не равно нулю')
+    def check_transaction_count_not_null(self, transaction_count):
+        assert transaction_count != 0, \
+            'Ожидается количество транзакций не равное нулю, получено "0"'
+
+    @allure.step('Нажать кнопку "Reset"')
+    def click_reset_button(self):
+        self.click_button(self.RESET_BUTTON)
+
+    @allure.step('Нажать кнопку "Back"')
+    def click_back_button(self):
+        self.click_button(self.BACK_BUTTON)
+
+    @allure.step('Проверить, что количество транзакций равно нулю')
+    def check_transaction_count_is_null(self, transaction_count):
+        assert transaction_count == 0, \
+            f'Ожидается количество транзакций равное нулю, получено "{transaction_count}"'
+
+    @allure.step('Перезайти под выбранным бользователем для обновления баланса')
+    def refresh_balance(self, first_name, last_name):
+        self.open_page()
+        self.click_customer_login_button()
+        self.select_customer(f'{first_name} {last_name}')
+        self.click_confirm_button()

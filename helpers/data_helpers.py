@@ -1,4 +1,5 @@
 import os
+import random
 
 import allure
 from dotenv import load_dotenv
@@ -68,3 +69,9 @@ class DataHelper:
     def get_longest_hobbie(list):
         list_values = [hobby.get_attribute('value') for hobby in list]
         return max(list_values)
+
+    @staticmethod
+    @allure.step('Получить случайную валидную сумму для списания')
+    def get_valid_withdrawl_value(balance):
+        value = str(random.randint(1, int(balance)))
+        return value
