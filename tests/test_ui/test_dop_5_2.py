@@ -30,13 +30,13 @@ class TestBankManager:
         with allure.step('3. Кликнуть по вкладке "Add Customer"'):
             banking_page.click_add_customer_tab()
 
-        with allure.step('4. Заполнить поле "First Name'):
+        with allure.step('4. Заполнить поле "First Name"'):
             banking_page.fill_customer_first_name_field(first_name)
 
-        with allure.step('5. Заполнить поле "Last Name'):
+        with allure.step('5. Заполнить поле "Last Name"'):
             banking_page.fill_customer_last_name_field(last_name)
 
-        with allure.step('6. Заполнить поле "Post Code'):
+        with allure.step('6. Заполнить поле "Post Code"'):
             banking_page.fill_customer_postcode_field(postcode)
 
         with allure.step('7. Кликнуть кнопку "Add Customer"'):
@@ -59,17 +59,17 @@ class TestBankManager:
         with allure.step('2. Кликнуть кнопку "Bank Manager Login"'):
             banking_page.click_bank_manager_login_button()
 
-        with allure.step('9. Кликнуть по вкладке "Open Account"'):
+        with allure.step('3. Кликнуть по вкладке "Open Account"'):
             banking_page.click_open_account_tab()
 
-        with allure.step('10. Выбрать созданного ранее пользователя в списке Customer'):
+        with allure.step('4. Выбрать созданного ранее пользователя в списке Customer'):
             banking_page.select_customer(f'{first_name} {last_name}')
 
-        with allure.step('11. Выбрать валюту в поле "Currency"'):
+        with allure.step('5. Выбрать валюту в поле "Currency"'):
             banking_page.select_random_currency()
 
-        with allure.step('12. Нажать кнопку "Process"'):
+        with allure.step('6. Нажать кнопку "Process"'):
             banking_page.click_confirm_button()
 
-        with allure.step('13. Проверить сообщение всплывающего окна после нажатия "Process"'):
+        with allure.step('7. Проверить сообщение всплывающего окна после нажатия "Process"'):
             banking_page.check_process_alert_text()
