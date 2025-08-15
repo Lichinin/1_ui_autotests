@@ -304,7 +304,7 @@ class BankingPage(BasePage):
             f'Ожидается количество транзакций равное нулю, получено "{transaction_count}"'
 
     @allure.step('Перезайти под выбранным бользователем для обновления баланса')
-    def refresh_balance(self, first_name, last_name):
+    def refresh_user_balance(self, first_name, last_name):
         self.open_page()
         self.click_customer_login_button()
         self.select_customer(f'{first_name} {last_name}')

@@ -172,3 +172,20 @@ def setup_processed_customer(pages: PageFactory):
     banking_page.click_bank_manager_login_button()
     banking_page.click_customers_tab()
     banking_page.delete_customer(first_name, last_name)
+
+
+@pytest.fixture(scope='function')
+def logged_customer(pages: PageFactory, setup_processed_customer):
+    first_name = setup_processed_customer['first_name']
+    last_name = setup_processed_customer['last_name']
+
+    banking_page = pages.banking_page.open_page()
+    banking_page.click_customer_login_button()
+    banking_page.select_customer(f'{first_name} {last_name}')
+    banking_page.click_confirm_button()
+    banking_page.check_welcome_text(f'{first_name} {last_name}')
+
+    return {
+        'banking_page': banking_page,
+        'user_data': setup_processed_customer
+    }
