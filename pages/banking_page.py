@@ -1,6 +1,7 @@
 import random
 
 import allure
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
@@ -52,6 +53,7 @@ class BankingPage(BasePage):
     ANY_COLUMN = (By.XPATH, './/tbody//tr/td[2]')
     RESET_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="reset()"]')
     BACK_BUTTON = (By.CSS_SELECTOR, 'button[ng-click="back()"]')
+    SEARCH_FIELD = ((By.CSS_SELECTOR, 'input[ng-model="searchCustomer"]'))
 
     @allure.step('Открыть стартовую страницу')
     def open_page(self):
@@ -159,12 +161,15 @@ class BankingPage(BasePage):
     @allure.step('Нажать на кнопку "Delete" У пользователя "{first_name} {last_name}"')
     def delete_customer(self, first_name, last_name):
         customer_table = self.get_element(self.TABLE)
-        customer_row = customer_table.find_element(
-            By.XPATH,
-            f'//tr[contains(td[1], "{first_name}") and contains(td[2], "{last_name}")]'
-        )
-        button = customer_row.find_element(*self.CUSTOMER_ROW_DELETE_BUTTON)
-        button.click()
+        try:
+            customer_row = customer_table.find_element(
+                By.XPATH,
+                f'//tr[contains(td[1], "{first_name}") and contains(td[2], "{last_name}")]'
+            )
+            button = customer_row.find_element(*self.CUSTOMER_ROW_DELETE_BUTTON)
+            button.click()
+        except NoSuchElementException:
+            allure.attach('Пользователь не найден, удаление пропущено')
 
     @allure.step('Нажать кнопку "Customer Login"')
     def click_customer_login_button(self):
@@ -309,3 +314,27 @@ class BankingPage(BasePage):
         self.click_customer_login_button()
         self.select_customer(f'{first_name} {last_name}')
         self.click_confirm_button()
+
+    @allure.step('Ввести в строку поиска значение "{first_name}"')
+    def searh_customer(self, first_name):
+        self.fill_field(self.SEARCH_FIELD, first_name)
+
+    @allure.step('Проверить что пользователь {firstname} {lastname} есть в таблице Customers')
+    def check_customer_in_table(self, firstname, lastname):
+        customers_table = self.get_element(self.TABLE)
+        customers_raw = customers_table.find_elements(By.XPATH, './/tr[td]')
+        customers_names = [' '.join(item.text.split()[:2]) for item in customers_raw]
+        assert f'{firstname} {lastname}' in customers_names, \
+            f'Customers {firstname} {lastname}, отсутствует в списке customers: {customers_names}'
+
+    @allure.step('Очистить строку поиска')
+    def clear_search_field(self):
+        self.get_element(self.SEARCH_FIELD).clear()
+
+    @allure.step('Проверить что пользователь {firstname} {lastname} отсутствует в таблице Customers')
+    def check_customer_not_in_table(self, firstname, lastname):
+        customers_table = self.get_element(self.TABLE)
+        customers_raw = customers_table.find_elements(By.XPATH, './/tr[td]')
+        customers_names = [' '.join(item.text.split()[:2]) for item in customers_raw]
+        assert f'{firstname} {lastname}' not in customers_names, \
+            f'Customers {firstname} {lastname}, отсутствует в списке customers: {customers_names}'
